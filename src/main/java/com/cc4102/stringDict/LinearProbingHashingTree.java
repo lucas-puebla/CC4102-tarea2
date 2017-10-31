@@ -138,14 +138,20 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @return
    */
   // Puede que sea una funcion muy mala!!
+  // sin el abs tira vaores negativos!! No se pq!!
+  // TODO
   private int getHash(String elem) {
     int hash = 7;
-    for (int i = 0; i < elem.length(); i++) {
-        hash = hash*31 + elem.charAt(i);
+    for (int i = 0 ; i < elem.length() ; i++) {
+        hash = hash * 31 + elem.charAt(i);
     }
-    return hash % hashLength;
+    return Math.abs(hash % hashLength);
   }
 
+  public int getHashNum(String elem) {
+    return this.getHash(elem);
+  }
+  
   public int getSize() {
     return hashOccupation;
   }

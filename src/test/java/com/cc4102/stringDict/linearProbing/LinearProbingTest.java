@@ -139,6 +139,20 @@ public class LinearProbingTest {
   }
 
   @Test
+  public void alwaysPositiveHashFunctionTest() {
+    String text =
+        "nam at lectus urna duis convallis convallis tellus id interdum velit laoreet id donec ultrices tincidunt arcu non sodales neque sodales ut etiam sit amet nisl purus in mollis nunc sed id semper risus in hendrerit gravida rutrum quisque non tellus orci ac auctor augue mauris augue neque gravida in fermentum et sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam id leo in vitae turpis massa sed elementum tempus egestas sed sed risus pretium quam vulputate dignissim suspendisse in est ante";
+    String[] elems = text.split(" ");
+    LinearProbingHashingTree tmp = (LinearProbingHashingTree) lpht;
+    int hash;
+
+    for (String elem : elems) {
+      hash = tmp.getHashNum(elem);
+      assertTrue("Every hash should be between 0 and hashLength.", hash >= 0 && hash < hashLength);
+    }
+  }
+
+  @Test
   public void fillPercentageBelow40PercentTest() {
     int occupation;
     LinearProbingHashingTree tmp = (LinearProbingHashingTree) lpht;
@@ -163,5 +177,28 @@ public class LinearProbingTest {
         occupation <= tmp.getMaxOccupation());
   }
 
+  @Test
+  public void insertionResistanceTest() {
+    String text =
+        "nam at lectus urna duis convallis convallis tellus id interdum velit laoreet id donec ultrices tincidunt arcu non sodales neque sodales ut etiam sit amet nisl purus in mollis nunc sed id semper risus in hendrerit gravida rutrum quisque non tellus orci ac auctor augue mauris augue neque gravida in fermentum et sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam id leo in vitae turpis massa sed elementum tempus egestas sed sed risus pretium quam vulputate dignissim suspendisse in est ante";
+    String[] elems = text.split(" ");
+    int iter = 10;
+
+    long initTime = System.nanoTime();
+    for (int i = 0; i < iter; i++) {
+      for (String elem : elems) {
+        lpht.insert(elem);
+      }
+    }
+    long finalTime = System.nanoTime();
+    long time = (finalTime - initTime);
+    System.out.println("Se insertaron: " + (iter * elems.length) + " elementos.");
+    System.out.println("Tiempo total: " + time / 1e6 + "ms");
+    System.out.println("Largo LPHT: " + lpht.getLength());
+    System.out.println("Size LPHT: " + lpht.getSize());
+    System.out.println("maxOccupation LPHT: " +
+          ((LinearProbingHashingTree) lpht).getMaxOccupation());
+    fail("not a test...");
+  }
 
 }
