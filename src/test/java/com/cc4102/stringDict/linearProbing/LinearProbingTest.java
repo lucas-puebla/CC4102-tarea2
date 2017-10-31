@@ -6,13 +6,13 @@ package com.cc4102.stringDict.linearProbing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
 import com.cc4102.stringDict.LinearProbingHashingTree;
 import com.cc4102.stringDict.StringDictionary;
 import com.cc4102.stringDict.LinearProbing.MyLinkedList;
-import com.cc4102.stringDict.LinearProbing.Node;
 
 /**
  * @author Lucas Puebla Silva
@@ -20,7 +20,7 @@ import com.cc4102.stringDict.LinearProbing.Node;
  */
 public class LinearProbingTest {
 
-  int hashLength = 10;
+  int hashLength = 50;
   StringDictionary lpht = new LinearProbingHashingTree(hashLength);
 
   @Test
@@ -33,16 +33,24 @@ public class LinearProbingTest {
   @Test
   public void hashingTableLinkedListNotNullTest() {
     MyLinkedList[] tmp = (MyLinkedList[]) lpht.getRoot();
-    for (int i = 0; i < hashLength; i++) {
-      assertNotNull(tmp[i]);
+    for (MyLinkedList elem : tmp) {
+      assertNotNull(elem);
     }
   }
 
   @Test
-  public void insertElementTest() {
+  public void hashingTableLinkedListsLengthTest() {
+    MyLinkedList[] root = (MyLinkedList[]) lpht.getRoot();
+    for (MyLinkedList ll : root) {
+      assertEquals(0, ll.size());
+    }
+  }
+
+  @Test
+  public void insertLotsOfElementTest() {
     MyLinkedList[] root = (MyLinkedList[]) lpht.getRoot();
     MyLinkedList tmp;
-    String elem = "wea";
+    String elem = "hola";
     boolean isThere = false;
 
     lpht.insert(elem);
@@ -57,4 +65,29 @@ public class LinearProbingTest {
     }
     assertTrue(isThere);
   }
+
+  @Test
+  public void successfulSearchTest() {
+    fail("not yet implemented");
+  }
+
+  @Test
+  public void unsuccessfulSearchTest() {
+    fail("not yet implemented");
+  }
+  
+  @Test
+  public void goodHashingFunctionTest() {
+    // Deberia poder verificar la reparticion de los elementos
+    // dentro de la estructura para asegurar que esten bien
+    // repartidos.
+    fail("not yet implemented");
+  }
+
+  @Test
+  public void fillPercentageBelow40Test() {
+    fail("not yet implemented");
+  }
+  
+  
 }

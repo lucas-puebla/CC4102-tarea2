@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import com.cc4102.stringDict.LinearProbing.INode;
 import com.cc4102.stringDict.LinearProbing.MyLinkedList;
-import com.cc4102.stringDict.LinearProbing.Node;
 import com.cc4102.stringDict.LinearProbing.NullNode;
 
 /**
@@ -59,7 +58,6 @@ public class MyLinkedListTest {
   @Test
   public void insertManyElementsTest() {
     String[] elems = {"a", "b", "c", "d", "f"};
-    int size = ll.size();
     
     for (String elem : elems) {
       ll.insert(elem);

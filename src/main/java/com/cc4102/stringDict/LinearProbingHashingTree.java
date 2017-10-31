@@ -5,7 +5,6 @@ package com.cc4102.stringDict;
 
 
 import com.cc4102.stringDict.LinearProbing.MyLinkedList;
-import com.cc4102.stringDict.LinearProbing.Node;
 
 /**
  * @author Lucas Puebla Silva
@@ -42,7 +41,21 @@ public class LinearProbingHashingTree implements StringDictionary {
   }
 
   public void insert(String elem) {
-    // TODO
+    int hash = getHash(elem);
+    hashTable[hash].insert(elem);
+  }
+
+  /**
+   * @param elem
+   * @return
+   */
+  // Puede que sea una funcion muy mala!!
+  private int getHash(String elem) {
+    int hash = 7;
+    for (int i = 0; i < elem.length(); i++) {
+        hash = hash*31 + elem.charAt(i);
+    }
+    return hash % hashLength;
   }
 
 }
