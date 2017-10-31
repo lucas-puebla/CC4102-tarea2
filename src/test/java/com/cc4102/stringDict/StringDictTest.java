@@ -15,7 +15,9 @@ public class StringDictTest {
 
   StringDictionary pt = new PatriciaTree();
   StringDictionary tst = new TernarySearchTree();
-  StringDictionary lpht = new LinearProbingHashingTree();
+  
+  int hashLength = 10;
+  StringDictionary lpht = new LinearProbingHashingTree(hashLength);
   
   @Test
   public void notNullTest() {
