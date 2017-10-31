@@ -4,7 +4,6 @@
 package com.cc4102.stringDict;
 
 
-import com.cc4102.stringDict.LinearProbing.MyLinkedList;
 
 /**
  * @author Lucas Puebla Silva
@@ -13,14 +12,23 @@ import com.cc4102.stringDict.LinearProbing.MyLinkedList;
 public class LinearProbingHashingTree implements StringDictionary {
 
   private int hashLength;
-  private MyLinkedList[] hashTable;
+  private int hashOccupation;
+  private int maxOccupation;
+  private String[] hashTable;
 
+  /**
+   * 
+   * Constructor of class LinearProbingHashingTree.
+   *
+   * <p> </p>
+   *
+   * @param hl, hashLength, don't use a value lower than 8, still debuging...
+   */
   public LinearProbingHashingTree(int hl) {
     hashLength = hl;
-    hashTable = new MyLinkedList[hashLength];
-    for (int i = 0; i < hashLength; i++) {
-      hashTable[i] = new MyLinkedList();
-    }
+    hashOccupation = 0;
+    maxOccupation = hashLength > 0 ? (int) (hashLength * 0.4) : 1;
+    hashTable = new String[hashLength];
 
   }
 
@@ -36,13 +44,93 @@ public class LinearProbingHashingTree implements StringDictionary {
     return this.getHashTable();
   }
 
-  public MyLinkedList[] getHashTable() {
+  public String[] getHashTable() {
     return hashTable;
+  }
+  
+  public boolean search(String elem) {
+    int hash = this.getHash(elem);
+    int offset = 0;
+    int count = 0;
+    while(!elem.equals(hashTable[(hash + offset) % hashLength])
+        && count < hashLength) {
+      offset++;
+      count++;
+    }
+    return elem.equals(hashTable[(hash + offset) % hashLength]);
+  }
+  
+  /**
+   * Only for testing purposes!
+   * @param elem
+   * @param giveCount
+   * @return
+   */
+  public int search(String elem, boolean giveCount) {
+    int hash = this.getHash(elem);
+    int offset = 0;
+    int count = 0;
+    while(!elem.equals(hashTable[(hash + offset) % hashLength])
+        && count < hashLength) {
+      offset++;
+      count++;
+    }
+    return count;
   }
 
   public void insert(String elem) {
+    if(hashOccupation == maxOccupation - 1 || maxOccupation == 0) {
+      this.rehash();
+    }
     int hash = getHash(elem);
-    hashTable[hash].insert(elem);
+    int offset = 0;
+    int count = 0;
+    while(hashTable[(hash + offset) % hashLength] != null
+        && count < hashLength) {
+      offset++;
+      count++;
+    }
+    hashTable[(hash + offset) % hashLength] = elem;
+    hashOccupation++;
+  }
+  
+  private void rehash() {
+    String[] tmp = new String[maxOccupation + 1];
+    int i = 0;
+    for(String elem : hashTable) {
+      if(elem != null) tmp[i++] = elem;
+    }
+    
+    hashLength = 2 * hashLength;
+    maxOccupation = hashLength > 1 ? (int) (hashLength * 0.4) : 1;
+    hashOccupation = 0;
+    
+    hashTable = new String[hashLength];
+    
+    for(String elem : tmp) {
+      if(elem != null) this.insert(elem);
+    }
+  }
+
+  /**
+   * For testing purposes only!
+   * @param elem
+   * @param insertAtEnd
+   */
+  public void insert(String elem, boolean insertAtEnd) {
+    if(hashOccupation >= maxOccupation || maxOccupation == 0) {
+      this.rehash();
+    }
+    int hash = hashLength - 1;
+    int offset = 0;
+    int count = 0;
+    while(hashTable[(hash + offset) % hashLength] != null
+        && count < hashLength) {
+      offset++;
+      count++;
+    }
+    hashTable[(hash + offset) % hashLength] = elem;
+    hashOccupation++;
   }
 
   /**
@@ -57,5 +145,16 @@ public class LinearProbingHashingTree implements StringDictionary {
     }
     return hash % hashLength;
   }
+
+  public int getSize() {
+    return hashOccupation;
+  }
+
+
+  public int getMaxOccupation() {
+    return maxOccupation;
+  }
+  
+  
 
 }
