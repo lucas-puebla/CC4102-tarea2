@@ -54,6 +54,17 @@ public class LinearProbingTest {
       assertTrue("Every element inserted should be in the hash: " + elem, lpht.search(elem));
     }
   }
+  
+  @Test
+  public void insertSameElementTest() {
+    // Es posible que no haya que implementar esto
+    // pero es razonable pensar que si se inserta muchas
+    // veces el mismo String, no debiera volver a agregarse
+    // al hash!
+    
+    // Si se implementa esto, tendr[e que cambiar varios tests!
+    fail("do not know if I should implement this");
+  }
 
   @Test
   public void hashInsertionCircularityTest() {
@@ -70,7 +81,6 @@ public class LinearProbingTest {
     assertEquals("The last hashTable space should be the first element inserted", elem,
         root[lpht.getLength() - 1]);
     assertEquals("The first hashTable space should be the second element inserted", elem2, root[0]);
-
   }
 
   @Test
@@ -192,13 +202,14 @@ public class LinearProbingTest {
     }
     long finalTime = System.nanoTime();
     long time = (finalTime - initTime);
+    System.out.println("Test de Resistencia de Inserciones");
     System.out.println("Se insertaron: " + (iter * elems.length) + " elementos.");
     System.out.println("Tiempo total: " + time / 1e6 + "ms");
     System.out.println("Largo LPHT: " + lpht.getLength());
     System.out.println("Size LPHT: " + lpht.getSize());
     System.out.println("maxOccupation LPHT: " +
           ((LinearProbingHashingTree) lpht).getMaxOccupation());
-    fail("not a test...");
+    assertTrue(true);
   }
 
 }
