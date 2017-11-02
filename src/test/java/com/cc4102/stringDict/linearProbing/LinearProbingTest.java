@@ -189,10 +189,14 @@ public class LinearProbingTest {
 
   @Test
   public void insertionResistanceTest() {
+    int hashLength = 262144;
+    StringDictionary lpht = new LinearProbingHashingTree(hashLength);
+    // lo anterior es una aproximacion del espacio ocupado
+    
     String text =
         "nam at lectus urna duis convallis convallis tellus id interdum velit laoreet id donec ultrices tincidunt arcu non sodales neque sodales ut etiam sit amet nisl purus in mollis nunc sed id semper risus in hendrerit gravida rutrum quisque non tellus orci ac auctor augue mauris augue neque gravida in fermentum et sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam id leo in vitae turpis massa sed elementum tempus egestas sed sed risus pretium quam vulputate dignissim suspendisse in est ante";
     String[] elems = text.split(" ");
-    int iter = 10;
+    int iter = 1000;
 
     long initTime = System.nanoTime();
     for (int i = 0; i < iter; i++) {
