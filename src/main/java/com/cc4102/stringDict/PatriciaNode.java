@@ -1,6 +1,7 @@
 package com.cc4102.stringDict;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 class PatriciaNode {
     private String str;
@@ -8,14 +9,14 @@ class PatriciaNode {
     private boolean isTerminal;
     private PatriciaNode father;
     private ArrayList<PatriciaNode> children;
-    private int value;
+    private ArrayList<Integer> values;
 
     public PatriciaNode(String str, int length, boolean isTerminal, PatriciaNode father, int value) {
         this.str = str;
         this.length = length;
         this.isTerminal = isTerminal;
         this.father = father;
-        this.value = value;
+        this.values = new ArrayList<>(Collections.singletonList(value));
     }
 
     protected String getStr() {
@@ -55,11 +56,11 @@ class PatriciaNode {
 
     }
 
-    protected boolean search(String str) {
+    protected ArrayList<Integer> search(String str) {
         if(str.equals(this.str) && isTerminal) {
-            return true;
+            return values;
         } else if (isTerminal) {
-            return false;
+            return null;
         } else {
             for(PatriciaNode node : this.children) {
                 String nodeStr = node.getStr();
@@ -70,7 +71,7 @@ class PatriciaNode {
                 }
             }
         }
-        return false;
+        return null;
     }
 
     private void removeChildLocally(PatriciaNode child) {
@@ -103,5 +104,9 @@ class PatriciaNode {
             }
         }
         return(a.substring(0, minLength));
+    }
+
+    protected void addString(String str, int value) {
+
     }
 }
