@@ -39,6 +39,17 @@ public interface StringDictionary {
    */
   void insert(String word, int pos);
 
+  /**
+   * @return
+   */
+  String[] getKeys();
+
+  /**
+   * @param key
+   * @return
+   */
+  int count(String key);
+
   
 
   
