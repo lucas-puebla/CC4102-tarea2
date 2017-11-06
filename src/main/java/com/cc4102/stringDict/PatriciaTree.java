@@ -14,28 +14,31 @@ public class PatriciaTree implements StringDictionary {
         this.root = new PatriciaNode("", true, null, new ArrayList<>());
     }
 
-    @Override
     public int getLength() {
         return 0;
     }
 
-    @Override
     public int getSize() {
         return 0;
     }
 
-    @Override
     public Object getRoot() {
         return root;
     }
 
-    @Override
     public ArrayList<Integer> search(String key) {
         return root.search(key);
     }
 
-    @Override
     public void insert(String word, int pos) {
         root.insert(word, pos);
+    }
+
+    public String[] getKeys() {
+        return new String[0];
+    }
+
+    public int count(String key) {
+        return root.search(key).size();
     }
 }
