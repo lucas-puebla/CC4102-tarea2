@@ -183,8 +183,8 @@ public class LinearProbingHashingTree implements StringDictionary {
       hashTable[(hash + offset) % hashLength].addVal(pos);
     } else {
       hashTable[(hash + offset) % hashLength] = new Par(word, pos);
+      hashOccupation++;
     }
-    hashOccupation++;
   }
 
   /**
@@ -338,22 +338,23 @@ public class LinearProbingHashingTree implements StringDictionary {
    * TODO
    */
   public String[] getKeys() {
-    String[] tmp = new String[hashOccupation + 1];
+    String[] tmp = new String[hashOccupation];
     int i = 0;
     for (Par elem : hashTable) {
-      if (elem != null)
+      if (elem != null) {
         tmp[i++] = elem.getKey();
+      }
     }
     return tmp;
   }
 
-  /* (non-Javadoc)
-   * @see com.cc4102.stringDict.StringDictionary#count(java.lang.String)
+  /**
+   * TODO
    */
   public int count(String key) {
     int res = 0;
     ArrayList<Integer> tmp = this.search(key);
-    if(tmp != null) {
+    if (tmp != null) {
       res = tmp.size();
     }
     return res;

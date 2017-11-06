@@ -23,7 +23,7 @@ public class TextSimilarity {
     texts = new String[3];
     texts[0] = text1;
     texts[1] = text2;
-    texts[2] = text1 + text2;
+    texts[2] = text1 + " " + text2;
     sds = new StringDictionary[3];
   }
 
@@ -85,7 +85,7 @@ public class TextSimilarity {
     for (int i = 0; i < texts.length; i++) {
       sds[i] = initializeStringDictStructure();
       tmp = tc.clean(texts[i]).split(" ");
-      for (int j = 0; j < tmp.length; j++) {
+      for (int j = 0; j < tmp.length ; j++) {
         sds[i].insert(tmp[j], j);
       }
     }
@@ -96,9 +96,9 @@ public class TextSimilarity {
    * @return
    */
   public double getSimilarity() {
-    double sim = 0;
+    double sim = 0.0;
     String key;
-    double size1, size2;
+    double size1, size2, length = 0.0;
     String[] keys = sds[2].getKeys();
     for (int i = 0; i < keys.length; i++) {
       key = keys[i];
@@ -106,9 +106,10 @@ public class TextSimilarity {
         size1 = sds[0].count(key);
         size2 = sds[1].count(key);
         sim += Math.abs(size1 - size2);  
+        length++;
       }
     }
-    return 1 - (sim / keys.length);
+    return 1.0 - (sim * 1.0 / length);
   }
 
 }
