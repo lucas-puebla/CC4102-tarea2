@@ -42,10 +42,10 @@ public class TextCleaner {
 
     for (char c : text.toCharArray()) {
       // estoy dejando solamente las letras minusculas y el espacio!
+      // quizas deberia mejorar algo
       if (c == 32 || c >= 97 && c <= 122)
         tmp += c;
     }
-
     return tmp;
   }
 
@@ -60,14 +60,14 @@ public class TextCleaner {
   public String clean(String text) {
     StringBuilder sb = new StringBuilder();
     String tmp;
+    String[] test;
 
     for (String word : text.split(" ")) {
       tmp = this.lowercase(word);
       tmp = this.replaceAccents(tmp);
       tmp = this.stem(tmp);
-      sb.append(this.removePunctuation(tmp));
+      sb.append(this.removePunctuation(tmp)+ " ");
     }
-
     return sb.toString();
   }
 
