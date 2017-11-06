@@ -5,18 +5,25 @@ import java.util.Collections;
 
 class PatriciaNode {
     private String str;
-    private int length;
     private boolean isTerminal;
     private PatriciaNode father;
     private ArrayList<PatriciaNode> children;
     private ArrayList<Integer> values;
 
-    public PatriciaNode(String str, int length, boolean isTerminal, PatriciaNode father, int value) {
+    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, int value) {
         this.str = str;
-        this.length = length;
         this.isTerminal = isTerminal;
         this.father = father;
+        this.children = new ArrayList<>(2);
         this.values = new ArrayList<>(Collections.singletonList(value));
+    }
+
+    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, ArrayList<Integer> values) {
+        this.str = str;
+        this.isTerminal = isTerminal;
+        this.father = father;
+        this.children = new ArrayList<>(2);
+        this.values = new ArrayList<>(values);
     }
 
     protected String getStr() {
@@ -25,23 +32,14 @@ class PatriciaNode {
 
     public void setStr(String str) {
         this.str = str;
-        this.setLength(str.length());
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    private void setLength(int length) {
-        this.length = length;
     }
 
     public boolean isTerminal() {
         return isTerminal;
     }
 
-    public void setTerminal(boolean terminal) {
-        isTerminal = terminal;
+    protected void setTerminal(boolean isTerminal) {
+        this.isTerminal = isTerminal;
     }
 
     protected PatriciaNode getFather() {
@@ -53,7 +51,9 @@ class PatriciaNode {
     }
 
     public void addChild(PatriciaNode child) {
-
+        children.add(child);
+        child.setFather(this);
+        this.setTerminal(false);
     }
 
     protected ArrayList<Integer> search(String str) {
@@ -65,6 +65,9 @@ class PatriciaNode {
             for(PatriciaNode node : this.children) {
                 String nodeStr = node.getStr();
                 if(str.startsWith(nodeStr)) {
+                    if(str.equals(nodeStr) && node.isTerminal) {
+                        return node.values;
+                    }
                     int prefixLength = largestCommonPrefix(nodeStr, str).length();
                     String searchStr = str.substring(prefixLength, str.length());
                     return node.search(searchStr);
@@ -81,15 +84,10 @@ class PatriciaNode {
         }
     }
 
-    private void addChildLocally(PatriciaNode child) {
-        children.add(child);
-        isTerminal = false;
-    }
-
     private String getEntireString() {
-        PatriciaNode act = this.getFather();
+        PatriciaNode act = this;
         StringBuilder res = new StringBuilder();
-        while(act != null) {
+        while(act.getFather() != null) {
             res.insert(0, act.getStr());
             act = act.getFather();
         }
@@ -106,7 +104,107 @@ class PatriciaNode {
         return(a.substring(0, minLength));
     }
 
-    protected void addString(String str, int value) {
+    protected void addString(String str, int value, String completeStr) {
+        if(str.length() == 0) { // Caso 2
+            if(children.get(0) != null) {
+                children.get(0).reinsertFromLeaf(completeStr, value);
+            } else if(children.get(1) != null) {
+                children.get(1).reinsertFromLeaf(completeStr, value);
+            }
+        }
+        char first = str.charAt(0);
+        if(children.size() > 0) {
+            if(!children.get(0).getStr().equals("")) {
+                if(children.get(0).getStr().charAt(0) != first && children.size() > 1) {
+                    if (children.get(1).getStr().charAt(0) != first) { // Caso 1
+                        children.get(0).reinsertFromLeaf(completeStr, value);
+                    }
+                } else {
+                    boolean foundPath = false;
+                    for (PatriciaNode node : this.children) {
+                        String nodeStr = node.getStr();
+                        if (str.startsWith(nodeStr)) {
+                            foundPath = true;
+                            int prefixLength = largestCommonPrefix(nodeStr, str).length();
+                            String insertStr = str.substring(prefixLength, str.length());
+                            node.addString(insertStr, value, completeStr);
+                        }
+                    }
+                    if(!foundPath) {
+                        PatriciaNode newNode = new PatriciaNode(str, true, this, value);
+                        this.addChild(newNode);
+                    }
+                }
+            }
+        } else if(isTerminal) { // Caso 3
+            this.reinsertFromLeaf(completeStr, value);
+        }
+    }
 
+    private void reinsertFromLeaf(String str, int value) {
+        PatriciaNode leaf = this;
+        while (!leaf.isTerminal()) {
+            leaf = leaf.children.get(0);
+        }
+        String leafStr = leaf.getEntireString();
+        String lcp = largestCommonPrefix(str, leafStr);
+        String insertString = str.substring(lcp.length());
+
+        PatriciaNode root = this;
+        while (root.father != null) {
+            root = root.father;
+        }
+        PatriciaNode current = root;
+
+        boolean found = false;
+        while (!found) {
+            String curStr = current.getStr();
+            if (curStr.startsWith(lcp) && current.isTerminal()) {
+                if (curStr.length() == lcp.length()) { // Caso 2
+                    PatriciaNode toInsert = new PatriciaNode(insertString, true, current, value);
+                    current.addChild(toInsert);
+                    found = true;
+                } else { // Caso 1: reemplazar nodo por uno con dos hijos
+                    current.getFather().removeChildLocally(current);
+                    String newNodeStr = largestCommonPrefix(str, current.getStr());
+                    String leftChildStr = current.getStr().substring(newNodeStr.length());
+                    String rightChildStr = str.substring(newNodeStr.length());
+                    PatriciaNode newNode = new PatriciaNode(newNodeStr, false, current.getFather(), -1);
+                    PatriciaNode leftChild = new PatriciaNode(leftChildStr, true, newNode, current.getValues());
+                    PatriciaNode rightChild = new PatriciaNode(rightChildStr, true, newNode, value);
+                    newNode.addChild(leftChild);
+                    newNode.addChild(rightChild);
+                    current.getFather().addChild(newNode);
+                    found = true;
+                }
+            } else { // Seguir buscando
+                String childStr = "";
+                PatriciaNode node = null;
+                if(current.children.get(0) != null) {
+                    node = current.children.get(0);
+                    childStr = current.children.get(0).getStr();
+                } else if(current.children.get(1) != null) {
+                    node = current.children.get(1);
+                    childStr = current.children.get(1).getStr();
+                }
+                if(childStr.startsWith(lcp)) {
+                    String trim = largestCommonPrefix(childStr, lcp);
+                    lcp = lcp.substring(trim.length());
+                    current = node;
+                }
+            }
+        }
+    }
+
+    public ArrayList<Integer> getValues() {
+        return values;
+    }
+
+    public static void main(String[] args) {
+        PatriciaNode node = new PatriciaNode("", true, null, 0);
+        node.addString("arbol", 5, "arbol");
+        node.addString("arboleda", 2, "arboleda");
+        node.addString("arboledal", 3, "arboledal");
+        System.out.println(node.search("arbol"));
     }
 }
