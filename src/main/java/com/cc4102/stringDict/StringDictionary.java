@@ -19,16 +19,18 @@ public interface StringDictionary {
   
   Object getRoot();
 
-  /**
-   * @param elem
-   */
-  void insert(String elem);
 
   /**
    * @param elem
    * @return
    */
-  boolean search(String elem);
+  boolean contains(String elem);
+
+  /**
+   * @param string
+   * @param i
+   */
+  void insert(String word, int pos);
 
   
 
