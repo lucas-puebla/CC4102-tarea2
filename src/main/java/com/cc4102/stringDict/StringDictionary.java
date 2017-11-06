@@ -3,6 +3,7 @@
  */
 package com.cc4102.stringDict;
 
+import java.util.ArrayList;
 
 /**
  * @author Lucas Puebla Silva
@@ -10,9 +11,14 @@ package com.cc4102.stringDict;
  */
 public interface StringDictionary {
 
+  /**
+   * Gives the total length of the object.
+   * @return
+   */
   int getLength();
 
   /**
+   * Gives the occupied size of the object.
    * @return
    */
   int getSize();
@@ -21,10 +27,11 @@ public interface StringDictionary {
 
 
   /**
-   * @param elem
+   * Searches within dictionary the key occurrence positions 
+   * @param key
    * @return
    */
-  boolean contains(String elem);
+  ArrayList<Integer> search(String key);
 
   /**
    * @param string

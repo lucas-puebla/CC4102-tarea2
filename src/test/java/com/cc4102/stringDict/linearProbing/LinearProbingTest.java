@@ -8,6 +8,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import com.cc4102.stringDict.LinearProbingHashingTree;
@@ -37,7 +39,8 @@ public class LinearProbingTest {
 
     lpht.insert(elem, 0);
 
-    assertTrue("The element inserted should be somewhere inside the hash", lpht.contains(elem));
+    assertTrue("The element inserted should be somewhere inside the hash", 
+        ((LinearProbingHashingTree) lpht).contains(elem));
   }
 
   @Test
@@ -49,28 +52,26 @@ public class LinearProbingTest {
     }
 
     for (String elem : elems) {
-      assertTrue("Every element inserted should be in the hash: " + elem, lpht.contains(elem));
+      assertTrue("Every element inserted should be in the hash: " + elem, 
+          ((LinearProbingHashingTree) lpht).contains(elem));
     }
   }
   
   @Test
   public void insertSameElementTest() {
-    // Es posible que no haya que implementar esto
-    // pero es razonable pensar que si se inserta muchas
-    // veces el mismo String, no debiera volver a agregarse
-    // al hash!
-    
-    // Si se implementa esto, tendr[e que cambiar varios tests!
     String[] text = {"a", "a"};
+    ArrayList<Integer> expected = new ArrayList<Integer>();
+    expected.add(0);
+    expected.add(1);
     
     for (int i = 0 ; i < text.length ; i++) {
       lpht.insert(text[i], i);
     }
     
     for (int i = 0; i < text.length; i++) {
-      assertTrue("When inserting the same element more than once, search() "
+      assertEquals("When inserting the same element more than once, search() "
           + "should return an ArrayList<Integer> with the position of the ocurrences",
-          lpht.contains(text[i]));
+          expected, lpht.search(text[i]));
     }
   }
 
@@ -85,7 +86,8 @@ public class LinearProbingTest {
     assertTrue(
         "Both elements should be in the LPHT, and this insert method "
             + "does so at the last space of the hashingTable, so it confirms circularity",
-        lpht.contains(elem) && lpht.contains(elem2));
+        ((LinearProbingHashingTree) lpht).contains(elem) 
+        && ((LinearProbingHashingTree) lpht).contains(elem2));
     assertEquals("The last hashTable space should be the first element inserted", elem,
         root[lpht.getLength() - 1].getKey());
     assertEquals("The first hashTable space should be the second element inserted", elem2, root[0].getKey());
@@ -118,14 +120,14 @@ public class LinearProbingTest {
 
     lpht.insert(elem, 0);
 
-    assertTrue("The element should be in the hashTable", lpht.contains(elem));
+    assertTrue("The element should be in the hashTable", ((LinearProbingHashingTree) lpht).contains(elem));
   }
 
   @Test
   public void hashUnsucccesfulContainmentTest() {
     String elem = "hola";
 
-    assertFalse("The element should not be in the hashTable", lpht.contains(elem));
+    assertFalse("The element should not be in the hashTable", ((LinearProbingHashingTree) lpht).contains(elem));
   }
 
   @Test
@@ -196,6 +198,8 @@ public class LinearProbingTest {
         occupation <= tmp.getMaxOccupation());
   }
 
+  
+  
   @Test
   public void insertionResistanceTest() {
     int hashLength = 262144;
