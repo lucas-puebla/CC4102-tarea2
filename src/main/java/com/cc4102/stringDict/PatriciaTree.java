@@ -1,5 +1,7 @@
 package com.cc4102.stringDict;
 
+import java.util.ArrayList;
+
 /**
  * @author Lucas Puebla Silva
  *
@@ -7,6 +9,10 @@ package com.cc4102.stringDict;
 public class PatriciaTree implements StringDictionary {
 
     private PatriciaNode root;
+
+    public PatriciaTree() {
+        this.root = new PatriciaNode("", true, null, new ArrayList<>());
+    }
 
     @Override
     public int getLength() {
@@ -20,16 +26,16 @@ public class PatriciaTree implements StringDictionary {
 
     @Override
     public Object getRoot() {
-        return null;
+        return root;
     }
 
     @Override
-    public void insert(String elem) {
-
+    public boolean contains(String elem) {
+        return (root.search(elem).size() > 0);
     }
 
     @Override
-    public boolean search(String elem) {
-        return false;
+    public void insert(String word, int pos) {
+        root.insert(word, pos);
     }
 }
