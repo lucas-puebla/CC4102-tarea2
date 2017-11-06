@@ -30,8 +30,8 @@ public class PatriciaTree implements StringDictionary {
     }
 
     @Override
-    public boolean contains(String elem) {
-        return (root.search(elem).size() > 0);
+    public ArrayList<Integer> search(String key) {
+        return root.search(key);
     }
 
     @Override
