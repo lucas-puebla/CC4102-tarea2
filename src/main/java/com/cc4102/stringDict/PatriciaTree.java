@@ -11,7 +11,7 @@ public class PatriciaTree implements StringDictionary {
     private PatriciaNode root;
 
     public PatriciaTree() {
-        this.root = new PatriciaNode("", true, null, new ArrayList<>());
+        this.root = new PatriciaNode("", true, null, new ArrayList<Integer>());
     }
 
     public int getLength() {

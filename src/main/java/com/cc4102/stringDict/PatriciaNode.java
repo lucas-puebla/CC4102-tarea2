@@ -14,16 +14,16 @@ class PatriciaNode {
         this.str = str;
         this.isTerminal = isTerminal;
         this.father = father;
-        this.children = new ArrayList<>(2);
-        this.values = new ArrayList<>(Collections.singletonList(value));
+        this.children = new ArrayList<PatriciaNode>(2);
+        this.values = new ArrayList<Integer>(Collections.singletonList(value));
     }
 
     public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, ArrayList<Integer> values) {
         this.str = str;
         this.isTerminal = isTerminal;
         this.father = father;
-        this.children = new ArrayList<>(2);
-        this.values = new ArrayList<>(values);
+        this.children = new ArrayList<PatriciaNode>(2);
+        this.values = new ArrayList<Integer>(values);
     }
 
     protected String getStr() {
@@ -60,7 +60,7 @@ class PatriciaNode {
         if (str.equals(this.str) && isTerminal) {
             return values;
         } else if (isTerminal) {
-            return new ArrayList<>();
+            return new ArrayList<Integer>();
         } else {
             for (PatriciaNode node : this.children) {
                 String nodeStr = node.getStr();
@@ -77,7 +77,7 @@ class PatriciaNode {
                 }
             }
         }
-        return new ArrayList<>();
+        return new ArrayList<Integer>();
     }
 
     private void removeChildLocally(PatriciaNode child) {
