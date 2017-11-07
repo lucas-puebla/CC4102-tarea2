@@ -65,8 +65,10 @@ public class Experiment {
     sw.reset();    
     
     // agregar parte de busqueda de n/10 palabras
+    //TODO
     
     // agregar parte de busqueda de palabras que no estan
+    //TODO
     
     // TextSimilarity
     ts = new TextSimilarity(text1, text2);
