@@ -95,7 +95,7 @@ public class TextSimilarityTest {
         Math.abs(1 - 0) + // raro
         Math.abs(0 - 1) + // lobo
         Math.abs(0 - 1) // feroz
-    ) / 9.0;
+    ) / 16.0;
 
     ts.execute();
 
@@ -120,7 +120,7 @@ public class TextSimilarityTest {
         Math.abs(1 - 0) + // raro
         Math.abs(0 - 1) + // lobo
         Math.abs(0 - 1) // feroz
-    ) / 9.0;
+    ) / 16.0;
 
     ts.execute();
 
@@ -145,7 +145,7 @@ public class TextSimilarityTest {
         Math.abs(1 - 0) + // raro
         Math.abs(0 - 1) + // lobo
         Math.abs(0 - 1) // feroz
-    ) / 9.0;
+    ) / 16.0;
 
     ts.execute();
 
