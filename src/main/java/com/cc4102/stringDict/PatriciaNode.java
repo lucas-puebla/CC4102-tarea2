@@ -61,7 +61,7 @@ class PatriciaNode {
         ArrayList<Integer> result = new ArrayList<Integer>();
         while (!found) {
             boolean tookPath = false;
-            for(PatriciaNode child : current.children ) {
+            for (PatriciaNode child : current.children) {
                 if (child.getStr().equals(str.substring(offset)) && child.isTerminal()) {
                     result.addAll(child.getValues());
                     found = true;
@@ -120,7 +120,7 @@ class PatriciaNode {
         boolean found = false;
         while (!found) {
             boolean tookPath = false;
-            for(PatriciaNode child : current.children ) {
+            for (PatriciaNode child : current.children) {
                 if (child.getStr().equals(word.substring(offset)) && child.isTerminal()) {
                     child.getValues().add(pos);
                     return;
@@ -156,5 +156,19 @@ class PatriciaNode {
                 return;
             }
         }
+    }
+
+    public ArrayList<String> getKeys(String prefix, ArrayList<String> result) {
+        if (this.isTerminal()) {
+            result.add(prefix + this.getStr());
+        }
+        for (PatriciaNode child : this.getChildren()) {
+            child.getKeys(prefix + this.getStr(), result);
+        }
+        return result;
+    }
+
+    public ArrayList<PatriciaNode> getChildren() {
+        return children;
     }
 }

@@ -5,10 +5,9 @@ import com.cc4102.stringDict.StringDictionary;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 public class PatriciaTreeTest {
 
@@ -87,5 +86,16 @@ public class PatriciaTreeTest {
         tree.insert("hola", values.get(1));
 
         assertTrue(tree.search("hola").containsAll(values));
+    }
+
+    @Test
+    public void getKeysTest() {
+        String elems[] = {"arbol", "arboleda", "arboledal", "barcasa", "barquito", "arbok"};
+        int values[] = {3, 4, 5, 10, 23, 14};
+        for (int i = 0; i < elems.length; i++) {
+            tree.insert(elems[i], values[i]);
+        }
+        String res[] = tree.getKeys();
+        assertTrue(Arrays.asList(res).containsAll(Arrays.asList(elems)));
     }
 }
