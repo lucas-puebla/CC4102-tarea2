@@ -27,20 +27,20 @@ public class TSTreeNode {
 
   private void initLeaf(char key, int value) {
     initNode(key);
-    values = new ArrayList<>();
+    values = new ArrayList<Integer>();
     values.add(value);
   }
 
   public ArrayList<Integer> search(String s) {
     if (s.length() == 0)
-      return null;
+      return new ArrayList<Integer>(); // vacío
 
     char first = s.charAt(0);
 
     if (s.length() == 1) {
       if (key == first)
         return values;
-      return null;
+      return new ArrayList<Integer>(); // vacío
     }
 
     if (first == key)
@@ -51,12 +51,13 @@ public class TSTreeNode {
       return right.search(s);
   }
 
-  public void insert(String s, int value) {
+  public void insert(String word, int pos) {
+    char first = word.charAt(0);
 
-    char first = s.charAt(0);
-    if (isEmpty()) {
-      if (s.length() == 1) {
-        initLeaf(first, value);
+    // inicializar nodos vacios
+    if (empty) {
+      if (word.length() == 1) {
+        initLeaf(first, pos);
         return;
       } else {
         initNode(first);
@@ -64,27 +65,54 @@ public class TSTreeNode {
     }
 
     if (first == key) {
-      if (s.length() == 1) {
-        values.add(value);
+
+      // palabra ya agregada
+      if (word.length() == 1) {
+        values.add(pos);
         return;
       }
-      son.insert(s.substring(1), value);
+      // continuar recursivamente
+      son.insert(word.substring(1), pos);
     } else if (first < key) {
-      left.insert(s, value);
+      left.insert(word, pos);
     } else {
-      right.insert(s, value);
+      right.insert(word, pos);
     }
   }
 
-  private boolean isEmpty() {
-    return empty;
+  public int getSize() {
+    if (empty)
+      return 0;
+    return 1 + son.getSize() + left.getSize() + right.getSize();
+  }
+
+  public void addKeys(String prefix, ArrayList<String> keys) {
+    if (empty)
+      return;
+
+    if (values != null)
+      keys.add(prefix);
+
+    left.addKeys(prefix, keys);
+    son.addKeys(prefix + String.valueOf(key), keys);
+    right.addKeys(prefix, keys);
+  }
+
+  public int count(String key) {
+    return search(key).size();
   }
 
   @Override
+  /**
+   * este metodo se usa solo para debuggear
+   */
   public String toString() {
     return toString("").trim();
   }
 
+  /**
+   * este metodo se usa solo para debuggear
+   */
   private String toString(String pre) {
     StringBuilder sb = new StringBuilder();
 
@@ -96,17 +124,17 @@ public class TSTreeNode {
     sb.append("\n");
 
     String newpre = pre + " ";
-    if (!son.isEmpty()) {
+    if (!son.empty) {
       sb.append(newpre);
       sb.append("son: ");
       sb.append(son.toString(newpre));
     }
-    if (!left.isEmpty()) {
+    if (!left.empty) {
       sb.append(newpre);
       sb.append("left: ");
       sb.append(left.toString(newpre));
     }
-    if (!right.isEmpty()) {
+    if (!right.empty) {
       sb.append(newpre);
       sb.append("right: ");
       sb.append(right.toString(newpre));
