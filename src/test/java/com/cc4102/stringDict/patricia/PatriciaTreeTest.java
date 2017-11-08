@@ -36,6 +36,34 @@ public class PatriciaTreeTest {
     }
 
     @Test
+    public void simpleSplit() {
+        tree.insert("arbol", 0);
+        tree.insert("arboleda", 1);
+        assertTrue(tree.search("arbol").contains(0));
+        assertTrue(tree.search("arboleda").contains(1));
+    }
+
+    @Test
+    public void commonPrefixSplit() {
+        tree.insert("arbol", 0);
+        tree.insert("arboleda", 1);
+        tree.insert("arbok", 2);
+        assertTrue(tree.search("arbol").contains(0));
+        assertTrue(tree.search("arboleda").contains(1));
+        assertTrue(tree.search("arbok").contains(2));
+    }
+
+    @Test
+    public void invertedPrefixSplit() {
+        tree.insert("una", 0);
+        tree.insert("un", 1);
+        tree.insert("u", 2);
+        assertTrue(tree.search("una").contains(0));
+        assertTrue(tree.search("un").contains(1));
+        assertTrue(tree.search("u").contains(2));
+    }
+
+    @Test
     public void insertSeveralElements() {
         String elems[] = {"arbol", "arboleda", "arboledal", "barcasa", "barquito", "arbok", "arbol"};
         int values[] = {3, 4, 5, 10, 23, 14, 33};
@@ -46,6 +74,7 @@ public class PatriciaTreeTest {
             assertTrue("Inserted text " + elems[i] + " and its value should be in the tree",
                     tree.search(elems[i]).contains(values[i]));
         }
+        tree.getSize();
     }
 
     @Test
@@ -58,14 +87,5 @@ public class PatriciaTreeTest {
         tree.insert("hola", values.get(1));
 
         assertTrue(tree.search("hola").containsAll(values));
-    }
-
-    @Test
-    public void insertSubStr() {
-        tree.insert("una", 1);
-        tree.insert("un", 2);
-
-        assertTrue(tree.search("una").contains(1));
-        assertTrue(tree.search("un").contains(2));
     }
 }
