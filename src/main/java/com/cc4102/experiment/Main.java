@@ -9,6 +9,8 @@ import com.cc4102.stringDict.StringDictionary;
 import com.cc4102.stringDict.TernarySearchTree;
 import com.cc4102.stringDict.experiment.Experiment;
 
+import java.io.File;
+
 /**
  * @author Lucas Puebla Silva
  *
@@ -23,9 +25,9 @@ public class Main {
     // String text1 = "habia una vez un pato imaginario que se dio cuenta que la vida no tiene
     // sentido";
     // String text2 = "habia una vez un lobo feroz que no tenia ganas de vivir la vida sin sentido";
-    String path = "/home/lucas/Desktop/U/CC4102/Tareas/Tarea2";
-    String path1 = path + "/Pride&Prejudice.txt";
-    String path2 = path + "/Dracula.txt";
+      String path = new File("").getAbsolutePath().concat("/src/main/java/com/cc4102/experiment/textos");
+    String path1 = path + "/19-Pride&Prejudice.txt";
+    String path2 = path + "/19-Dracula.txt";
 
     // lpht
     StringDictionary lpht1, lpht2;
