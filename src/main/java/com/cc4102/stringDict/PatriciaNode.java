@@ -120,15 +120,36 @@ class PatriciaNode {
         while (!found) {
             boolean tookPath = false;
             for(PatriciaNode child : current.children ) {
-                if (child.getStr().equals(str.substring(offset)) && child.isTerminal()) {
+                if (child.getStr().equals(word.substring(offset)) && child.isTerminal()) {
                     child.getValues().add(pos);
                     return;
-                } else if (str.substring(offset).startsWith(child.getStr())) {
-                    // ver si crear nuevo nodo, o continuar por el árbol
+                } else if (word.substring(offset).startsWith(child.getStr())) {
+                    current = child;
+                    offset += largestCommonPrefix(word.substring(offset), child.getStr()).length();
+                    tookPath = true;
+                    break;
+                } else if (largestCommonPrefix(word.substring(offset), child.getStr()).length() > 0) {
+                    String lcp = largestCommonPrefix(word.substring(offset), child.getStr());
+                    offset += lcp.length();
+                    String newWord = word.substring(offset);
+                    PatriciaNode newNode = new PatriciaNode(lcp, current.isTerminal(), current);
+                    if (newWord.length() > 0) {
+                        PatriciaNode insertedNode = new PatriciaNode(word.substring(offset), true, current, pos);
+                        newNode.addChild(insertedNode);
+                        child.setStr(child.getStr().substring(lcp.length()));
+                    } else {
+                        newNode.setTerminal(true);
+                        newNode.getValues().add(pos);
+                        child.setStr(child.getStr().substring(offset));
+                    }
+                    current.removeChild(child);
+                    newNode.addChild(child);
+                    current.addChild(newNode);
+                    return;
                 }
             }
             if (!tookPath) {
-                PatriciaNode newNode = new PatriciaNode(str.substring(offset), true, current, pos);
+                PatriciaNode newNode = new PatriciaNode(word.substring(offset), true, current, pos);
                 current.addChild(newNode);
                 return;
             }
