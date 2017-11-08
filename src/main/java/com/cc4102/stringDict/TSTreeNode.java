@@ -32,29 +32,29 @@ public class TSTreeNode {
   }
 
   public ArrayList<Integer> search(String s) {
-    if (s.length() == 0)
-      return new ArrayList<Integer>(); // vacío
+    if (empty) // not found
+      return new ArrayList<Integer>(); // empty
 
     char first = s.charAt(0);
 
-    if (s.length() == 1) {
-      if (key == first)
+    if (first == key) {
+      // word found
+      if (s.length() == 1)
         return values;
-      return new ArrayList<Integer>(); // vacío
-    }
 
-    if (first == key)
+      // recursive calls
       return son.search(s.substring(1));
-    else if (first < key)
+    } else if (first < key) {
       return left.search(s);
-    else
+    } else {
       return right.search(s);
+    }
   }
 
   public void insert(String word, int pos) {
     char first = word.charAt(0);
 
-    // inicializar nodos vacios
+    // initialize empty nodes
     if (empty) {
       if (word.length() == 1) {
         initLeaf(first, pos);
@@ -65,13 +65,12 @@ public class TSTreeNode {
     }
 
     if (first == key) {
-
-      // palabra ya agregada
+      // word already in
       if (word.length() == 1) {
         values.add(pos);
         return;
       }
-      // continuar recursivamente
+      // recursive calls
       son.insert(word.substring(1), pos);
     } else if (first < key) {
       left.insert(word, pos);
