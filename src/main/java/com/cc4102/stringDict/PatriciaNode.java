@@ -111,6 +111,7 @@ class PatriciaNode {
 
     public void addChild(PatriciaNode child) {
         this.children.add(child);
+        child.setFather(this);
     }
 
     public void insert(String word, int pos) {
@@ -134,13 +135,14 @@ class PatriciaNode {
                     String newWord = word.substring(offset);
                     PatriciaNode newNode = new PatriciaNode(lcp, current.isTerminal(), current);
                     if (newWord.length() > 0) {
-                        PatriciaNode insertedNode = new PatriciaNode(word.substring(offset), true, current, pos);
+                        PatriciaNode insertedNode = new PatriciaNode(newWord, true, current, pos);
                         newNode.addChild(insertedNode);
                         child.setStr(child.getStr().substring(lcp.length()));
                     } else {
                         newNode.setTerminal(true);
                         newNode.getValues().add(pos);
-                        child.setStr(child.getStr().substring(offset));
+                        String str = child.getEntireString().replace(word, "");
+                        child.setStr(str);
                     }
                     current.removeChild(child);
                     newNode.addChild(child);
