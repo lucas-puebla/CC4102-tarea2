@@ -18,16 +18,29 @@ public class Main {
 
 
   public static void main(String[] args) {
+    int experimentReps = 10;
+    int reps = 10;
+    
     Experiment exp = new Experiment();
-    int reps = 1;
+    
+    
+    for (int i = 0; i < experimentReps; i++) {
+      runExperiments(exp, reps, (int) Math.pow(2, i+10));
+    }
+    
+    
+  }
+  private static void runExperiments(Experiment exp, int reps, int textLength) {
 
     // String text1 = "habia una vez un pato imaginario que se dio cuenta que la vida no tiene
     // sentido";
     // String text2 = "habia una vez un lobo feroz que no tenia ganas de vivir la vida sin sentido";
     String path = new File("").getAbsolutePath().concat("/src/main/java/com/cc4102/experiment/textos");
-    String path1 = path + "/19-Pride&Prejudice.txt";
-    String path2 = path + "/19-Dracula.txt";
+    String path1 = path + "/asoif#" + textLength + ".txt";
+    String path2 = path + "/harry_potter#" + textLength + ".txt";
     String path3 = path + "/CREA_total.TXT";
+    
+    
 
     // lpht
     StringDictionary sd1, sd2, sd3;
@@ -36,6 +49,7 @@ public class Main {
     // exp.preProcessText(text1, text2);
     exp.preProcessTextFile(path1, path2, path3);
 
+  
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning LinearProbingHashingTree test " + i + "...");
       sd1 = new LinearProbingHashingTree(8);
