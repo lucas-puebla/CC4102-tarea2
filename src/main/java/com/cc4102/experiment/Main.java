@@ -30,19 +30,7 @@ public class Main {
     String path3 = path + "/CREA_total.TXT";
 
     // lpht
-    StringDictionary lpht1, lpht2;
-    lpht1 = new LinearProbingHashingTree(8);
-    lpht2 = new LinearProbingHashingTree(8);
-
-    // pt
-    StringDictionary pt1, pt2;
-    pt1 = new PatriciaTree();
-    pt2 = new PatriciaTree();
-
-    // tst
-    StringDictionary tst1, tst2;
-    tst1 = new TernarySearchTree();
-    tst2 = new TernarySearchTree();
+    StringDictionary sd1, sd2, sd3;
 
     // Choose text input
     // exp.preProcessText(text1, text2);
@@ -50,17 +38,26 @@ public class Main {
 
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning LinearProbingHashingTree test " + i + "...");
-      exp.runTest(lpht1, lpht2, new LinearProbingHashingTree(8));
+      sd1 = new LinearProbingHashingTree(8);
+      sd2 = new LinearProbingHashingTree(8);
+      sd3 = new LinearProbingHashingTree(8);
+      exp.runTest(sd1, sd2, sd3);
     }
 
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning PatriciaTree test " + i + "...");;
-      exp.runTest(pt1, pt2, new PatriciaTree());
+      sd1 = new PatriciaTree();
+      sd2 = new PatriciaTree();
+      sd3 = new PatriciaTree();
+      exp.runTest(sd1, sd2, sd3);
     }
 
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning TernarySearchTree test " + i + "...");
-      exp.runTest(tst1, tst2, new TernarySearchTree());
+      sd1 = new TernarySearchTree();
+      sd2 = new TernarySearchTree();
+      sd3 = new TernarySearchTree();
+      exp.runTest(sd1, sd2, sd3);
     }
   }
 
