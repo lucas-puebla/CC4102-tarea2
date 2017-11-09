@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cc4102.textCleaner;
+package com.cc4102.experiment;
 
 /**
  * @author Lucas Puebla Silva
