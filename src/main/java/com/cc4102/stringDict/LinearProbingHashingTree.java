@@ -360,5 +360,10 @@ public class LinearProbingHashingTree implements StringDictionary {
     return res;
   }
 
+  @Override
+  public String getClassStr() {
+    return "LinearProbingHashingTree";
+  }
+
 
 }

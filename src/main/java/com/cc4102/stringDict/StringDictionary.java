@@ -50,9 +50,5 @@ public interface StringDictionary {
    */
   int count(String key);
 
-  
-
-  
-
-  
+  String getClassStr();
 }

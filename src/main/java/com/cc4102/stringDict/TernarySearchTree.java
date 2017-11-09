@@ -32,6 +32,11 @@ public class TernarySearchTree implements StringDictionary {
   }
 
   @Override
+  public String getClassStr() {
+    return "TernarySearchTree";
+  }
+
+  @Override
   public String toString() {
     return "root: " + root.toString();
   }

@@ -44,4 +44,9 @@ public class PatriciaTree implements StringDictionary {
     public int count(String key) {
         return root.search(key).size();
     }
+
+    @Override
+    public String getClassStr() {
+        return "PatriciaTree";
+    }
 }
