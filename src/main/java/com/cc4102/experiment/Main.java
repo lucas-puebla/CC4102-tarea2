@@ -23,9 +23,9 @@ public class Main {
     // String text1 = "habia una vez un pato imaginario que se dio cuenta que la vida no tiene
     // sentido";
     // String text2 = "habia una vez un lobo feroz que no tenia ganas de vivir la vida sin sentido";
-    String path = "/home/lucas/Desktop/U/CC4102/Tareas/Tarea2";
-    String path1 = path + "/Pride&Prejudice.txt";
-    String path2 = path + "/Dracula.txt";
+    String path = "/home/lucas/git/CC4102-tarea2 (copy)/src/main/java/com/cc4102/experiment/textos/";
+    String path1 = path + "-Brothers_Grimm.txt";
+    String path2 = path + "-Sherlock_Holmes.txt";
 
     // lpht
     StringDictionary lpht1, lpht2;

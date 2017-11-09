@@ -32,7 +32,7 @@ public class LinearProbingHashingTree implements StringDictionary {
   public LinearProbingHashingTree(int hl) {
     hashLength = hl < 8 ? 8 : hl;
     hashOccupation = 0;
-    maxOccupation = hashLength > 0 ? (int) (hashLength * 0.4) : 1;
+    maxOccupation = (int) (hashLength * 0.4);
     hashTable = new Par[hashLength];
   }
 
@@ -137,7 +137,7 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param elem corresponds to a Par object to be inserted.
    */
   private void insert(Par elem) {
-    if (hashOccupation == maxOccupation - 1 || maxOccupation == 0) {
+    if (hashOccupation == maxOccupation - 1) {
       this.rehash();
     }
     String key = elem.getKey();
