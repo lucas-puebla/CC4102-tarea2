@@ -49,7 +49,7 @@ public class TextSimilarity {
   }
 
   /**
-   * @param lpht
+   * @param sd
    */
   public void setStringDictType(StringDictionary sd) {
     stringDictType = sd;
