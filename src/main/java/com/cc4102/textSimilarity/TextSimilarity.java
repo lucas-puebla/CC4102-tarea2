@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.cc4102.textSimilarity;
 
@@ -76,7 +76,7 @@ public class TextSimilarity {
   }
 
   /**
-   * 
+   *
    */
   public void execute() {
     TextCleaner tc = new TextCleaner();
@@ -106,7 +106,7 @@ public class TextSimilarity {
         size1 = sds[0].count(key);
         size2 = sds[1].count(key);
         total += sds[2].count(key);
-        sim += Math.abs(size1 - size2); 
+        sim += Math.abs(size1 - size2);
       }
     }
     return 1.0 - (sim / total);

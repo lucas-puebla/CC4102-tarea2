@@ -2,13 +2,13 @@ package com.cc4102.stringDict;
 
 import java.util.ArrayList;
 
-public class TSTreeNode {
+class TSTreeNode {
   private char key;
   private ArrayList<Integer> values;
   private TSTreeNode left, right, son;
   private boolean empty;
 
-  public TSTreeNode() {
+  TSTreeNode() {
     empty = true;
     key = 0;
     values = null;
@@ -85,7 +85,7 @@ public class TSTreeNode {
     return 1 + son.getSize() + left.getSize() + right.getSize();
   }
 
-  public void addKeys(String prefix, ArrayList<String> keys) {
+  void addKeys(String prefix, ArrayList<String> keys) {
     if (empty)
       return;
 

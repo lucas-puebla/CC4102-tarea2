@@ -20,7 +20,7 @@ public class Main {
 
   public static void main(String[] args) {
     Experiment exp = new Experiment();
-    int reps = 10;
+    int reps = 1;
 
     // String text1 = "habia una vez un pato imaginario que se dio cuenta que la vida no tiene
     // sentido";
@@ -47,11 +47,11 @@ public class Main {
     // Choose text input
     // exp.preProcessText(text1, text2);
     exp.preProcessTextFile(path1, path2);
+
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning LinearProbingHashingTree test " + i + "...");
       exp.runTest(lpht1, lpht2, new LinearProbingHashingTree(8));
     }
-
 
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning PatriciaTree test " + i + "...");;

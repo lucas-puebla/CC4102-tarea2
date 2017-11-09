@@ -35,6 +35,7 @@ public class Experiment {
   TextCleaner tc = new TextCleaner();
   TextSimilarity ts;
   TextSearcher searcher = new TextSearcher();
+  String[] wordsToSearch;
 
   public void preProcessText(String text1, String text2) {
     this.text1 = tc.clean(text1);
@@ -57,6 +58,11 @@ public class Experiment {
       e.printStackTrace();
       System.out.println("Wrong path2, could not read any file");
     }
+
+    // definir palabras que se van a buscar para todos los textos
+    ArrayList<String> wordsToSearch = searcher.getRandomWords(1.0 / 10.0, text1.split(" "));
+    this.wordsToSearch = wordsToSearch.toArray(new String[wordsToSearch.size()]);
+
     return read1 && read2;
 
   }
@@ -111,8 +117,9 @@ public class Experiment {
     System.out.println("Construction2 took: " + constructionTime2 + " micro seconds");
     sw.reset();
 
-    ArrayList<String> wordsToSearch = searcher.getRandomWords(1.0 / 10.0, words1);
-    searcher.searchForWords(wordsToSearch.toArray(new String[wordsToSearch.size()]) , sd1);
+    // movido a preprocess para que sea igual para todos.
+    // ArrayList<String> wordsToSearch = searcher.getRandomWords(1.0 / 10.0, words1);
+    searcher.searchForWords(wordsToSearch , sd1);
 
     // agregar parte de busqueda de palabras que no estan
     // TODO
