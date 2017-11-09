@@ -123,9 +123,9 @@ public class Experiment {
 
     // TextSimilarity
     ts = new TextSimilarity(text1, text2);
-    sw.start();
     ts.setStringDictType(sdType);
     ts.execute();
+    sw.start();
     similarity = ts.getSimilarity();
     sw.stop();
     similarityTime = sw.getTime();
