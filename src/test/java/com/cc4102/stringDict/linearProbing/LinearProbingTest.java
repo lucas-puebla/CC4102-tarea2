@@ -22,7 +22,7 @@ import com.cc4102.stringDict.StringDictionary;
 public class LinearProbingTest {
 
   int hashLength = 8;
-  StringDictionary lpht = new LinearProbingHashingTree(hashLength);
+  LinearProbingHashingTree lpht = new LinearProbingHashingTree(hashLength);
   Par[] root = (Par[]) lpht.getRoot();
 
   @Test
@@ -244,7 +244,7 @@ public class LinearProbingTest {
   @Test
   public void insertionResistanceTest() {
     int hashLength = 262144;
-    StringDictionary lpht = new LinearProbingHashingTree(hashLength);
+    LinearProbingHashingTree lpht = new LinearProbingHashingTree(hashLength);
     // lo anterior es una aproximacion del espacio ocupado
 
     String text =

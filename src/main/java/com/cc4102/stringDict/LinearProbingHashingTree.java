@@ -90,7 +90,7 @@ public class LinearProbingHashingTree implements StringDictionary {
     while (offset < hashLength) {
       if (hashTable[(hash + offset) % hashLength] == null) {
         offset++;
-        continue;
+        break;
       }
       if (elem.equals(hashTable[(hash + offset) % hashLength].getKey())) {
         contains = true;
@@ -322,8 +322,7 @@ public class LinearProbingHashingTree implements StringDictionary {
     while (offset < hashLength) {
       tmp = hashTable[(hash + offset) % hashLength];
       if (tmp == null) {
-        offset++;
-        continue;
+        break;
       }
       if (key.equals(tmp.getKey())) {
         values = tmp.getValues();

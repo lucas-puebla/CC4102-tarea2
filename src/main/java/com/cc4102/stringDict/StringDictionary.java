@@ -10,22 +10,6 @@ import java.util.ArrayList;
  *
  */
 public interface StringDictionary {
-
-  /**
-   * Gives the total length of the object.
-   * @return
-   */
-  int getLength();
-
-  /**
-   * Gives the occupied size of the object.
-   * @return
-   */
-  int getSize();
-  
-  Object getRoot();
-
-
   /**
    * Searches within dictionary the key occurrence positions 
    * @param key
@@ -34,8 +18,8 @@ public interface StringDictionary {
   ArrayList<Integer> search(String key);
 
   /**
-   * @param string
-   * @param i
+   * @param word
+   * @param pos
    */
   void insert(String word, int pos);
 

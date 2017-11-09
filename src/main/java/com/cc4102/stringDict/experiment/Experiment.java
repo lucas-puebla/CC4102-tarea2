@@ -96,7 +96,7 @@ public class Experiment {
   public void runTest(StringDictionary sd1, StringDictionary sd2, StringDictionary sdType) {
     long constructionTime1, succesfulSearchTime1, unsuccesfulSearchTime1, similarityTime,
         constructionTime2, succesfulSearchTime2, unsuccesfulSearchTime2;
-    double similarity;
+    double similarity = 0;
     String[] words1 = text1.split(" ");
     String[] words2 = text2.split(" ");
 

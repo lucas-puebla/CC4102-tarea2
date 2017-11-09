@@ -34,16 +34,4 @@ public class TernarySearchTree implements StringDictionary {
   public String toString() {
     return "root: " + root.toString();
   }
-
-  public int getLength() {
-    return 0;
-  }
-
-  public int getSize() {
-    return 0;
-  }
-
-  public Object getRoot() {
-    return root;
-  }
 }
