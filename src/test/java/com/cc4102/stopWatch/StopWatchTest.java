@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import java.util.concurrent.TimeUnit;
 
+import com.cc4102.experiment.StopWatch;
 import org.junit.Test;
 
 /**

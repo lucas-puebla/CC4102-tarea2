@@ -5,6 +5,7 @@ package com.cc4102.textCleaner;
 
 import static org.junit.Assert.*;
 
+import com.cc4102.experiment.TextCleaner;
 import org.junit.Test;
 
 /**
