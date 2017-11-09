@@ -1,6 +1,7 @@
 package com.cc4102.stringDict;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * @author Lucas Puebla Silva
@@ -35,7 +36,7 @@ public class PatriciaTree implements StringDictionary {
     }
 
     public String[] getKeys() {
-        ArrayList<String> result = new ArrayList<String>();
+        HashSet<String> result = new HashSet<String>();
         root.getKeys("", result);
         return result.toArray(new String[result.size()]);
     }

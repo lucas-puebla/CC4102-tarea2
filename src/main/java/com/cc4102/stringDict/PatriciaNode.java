@@ -2,6 +2,7 @@ package com.cc4102.stringDict;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 class PatriciaNode {
     private String str;
@@ -158,8 +159,8 @@ class PatriciaNode {
         }
     }
 
-    public ArrayList<String> getKeys(String prefix, ArrayList<String> result) {
-        if (this.isTerminal() && !result.contains(this.getEntireString())) {
+    public HashSet<String> getKeys(String prefix, HashSet<String> result) {
+        if (this.isTerminal()) {
             result.add(prefix + this.getStr());
         }
         for (PatriciaNode child : this.getChildren()) {
