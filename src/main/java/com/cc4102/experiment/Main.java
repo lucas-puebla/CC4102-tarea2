@@ -25,7 +25,7 @@ public class Main {
     // String text1 = "habia una vez un pato imaginario que se dio cuenta que la vida no tiene
     // sentido";
     // String text2 = "habia una vez un lobo feroz que no tenia ganas de vivir la vida sin sentido";
-      String path = new File("").getAbsolutePath().concat("/src/main/java/com/cc4102/experiment/textos");
+    String path = new File("").getAbsolutePath().concat("/src/main/java/com/cc4102/experiment/textos");
     String path1 = path + "/19-Pride&Prejudice.txt";
     String path2 = path + "/19-Dracula.txt";
 
@@ -54,12 +54,12 @@ public class Main {
 
 
     for (int i = 0; i < reps; i++) {
-      System.out.println("\nRunning LinearProbingHashingTree test " + i + "...");;
+      System.out.println("\nRunning PatriciaTree test " + i + "...");;
       exp.runTest(pt1, pt2, new PatriciaTree());
     }
 
     for (int i = 0; i < reps; i++) {
-      System.out.println("\nRunning LinearProbingHashingTree test " + i + "...");
+      System.out.println("\nRunning TernarySearchTree test " + i + "...");
       exp.runTest(tst1, tst2, new TernarySearchTree());
     }
   }
