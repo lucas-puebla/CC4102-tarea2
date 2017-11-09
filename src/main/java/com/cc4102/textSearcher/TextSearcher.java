@@ -36,4 +36,13 @@ public class TextSearcher {
             Logger.logSuccSearch(dict.getClassStr(), length, words[i].length(), sw.getTime());
         }
     }
+
+    public void unsuccessfulSearch(String[] words, StringDictionary dict, int searches) {
+        for(int i = 0; i < searches; i++) {
+            sw.start();
+            dict.search(words[i]);
+            sw.stop();
+            Logger.logUnsuccSearch(dict.getClassStr(), searches, words[i].length(), sw.getTime());
+        }
+    }
 }

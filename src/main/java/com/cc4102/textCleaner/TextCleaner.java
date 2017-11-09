@@ -68,7 +68,9 @@ public class TextCleaner {
       tmp = this.stem(tmp);
       sb.append(this.removePunctuation(tmp)+ " ");
     }
-    return sb.toString();
+    String res = sb.toString();
+    res = res.replaceAll("( +)"," ").trim();
+    return res;
   }
 
   /**

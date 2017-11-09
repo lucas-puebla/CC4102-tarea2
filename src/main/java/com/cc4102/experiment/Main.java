@@ -28,6 +28,7 @@ public class Main {
     String path = new File("").getAbsolutePath().concat("/src/main/java/com/cc4102/experiment/textos");
     String path1 = path + "/19-Pride&Prejudice.txt";
     String path2 = path + "/19-Dracula.txt";
+    String path3 = path + "/CREA_total.TXT";
 
     // lpht
     StringDictionary lpht1, lpht2;
@@ -46,7 +47,7 @@ public class Main {
 
     // Choose text input
     // exp.preProcessText(text1, text2);
-    exp.preProcessTextFile(path1, path2);
+    exp.preProcessTextFile(path1, path2, path3);
 
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning LinearProbingHashingTree test " + i + "...");

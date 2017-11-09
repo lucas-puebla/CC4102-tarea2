@@ -30,4 +30,9 @@ public class Logger {
         String s = totalSize + "," + wordLength + "," + time + '\n';
         log(s, "succSearch" + classStr);
     }
+
+    public static void logUnsuccSearch(String classStr, int totalSize, int wordLength, long time) {
+        String s = totalSize + "," + wordLength + "," + time + '\n';
+        log(s, "unsuccSearch" + classStr);
+    }
 }

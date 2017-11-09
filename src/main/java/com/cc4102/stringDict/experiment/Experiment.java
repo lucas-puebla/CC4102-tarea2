@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import com.cc4102.stopWatch.StopWatch;
@@ -31,6 +32,7 @@ public class Experiment {
   int hashLength = (int) Math.pow(2, 20);
   // Este valor puede variar en funcion de la cantidad de palabras!
   String text1, text2;
+  String spanishWords;
 
   TextCleaner tc = new TextCleaner();
   TextSimilarity ts;
@@ -42,8 +44,8 @@ public class Experiment {
     this.text2 = tc.clean(text2);
   }
 
-  public boolean preProcessTextFile(String path1, String path2) {
-    boolean read1 = true, read2 = true;
+  public boolean preProcessTextFile(String path1, String path2, String path3) {
+    boolean read1 = true, read2 = true, read3 = true;
     try {
       text1 = tc.clean(this.readFile(path1));
     } catch (Exception e) {
@@ -58,12 +60,19 @@ public class Experiment {
       e.printStackTrace();
       System.out.println("Wrong path2, could not read any file");
     }
+    try {
+      spanishWords = tc.clean(this.readFile(path3));
+    } catch (Exception e) {
+      read3 = false;
+      e.printStackTrace();
+      System.out.println("Wrong path3, could not read any file");
+    }
 
     // definir palabras que se van a buscar para todos los textos
     ArrayList<String> wordsToSearch = searcher.getRandomWords(1.0 / 10.0, text1.split(" "));
     this.wordsToSearch = wordsToSearch.toArray(new String[wordsToSearch.size()]);
 
-    return read1 && read2;
+    return read1 && read2 && read3;
 
   }
 
@@ -119,10 +128,9 @@ public class Experiment {
 
     // movido a preprocess para que sea igual para todos.
     // ArrayList<String> wordsToSearch = searcher.getRandomWords(1.0 / 10.0, words1);
-    searcher.searchForWords(wordsToSearch , sd1);
+    searcher.searchForWords(wordsToSearch, sd1);
 
-    // agregar parte de busqueda de palabras que no estan
-    // TODO
+    searcher.unsuccessfulSearch(spanishWords.split(" "), sd1, wordsToSearch.length);
 
     // TextSimilarity
     ts = new TextSimilarity(text1, text2);
