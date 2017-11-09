@@ -7,7 +7,6 @@ import com.cc4102.stringDict.LinearProbingHashingTree;
 import com.cc4102.stringDict.PatriciaTree;
 import com.cc4102.stringDict.StringDictionary;
 import com.cc4102.stringDict.TernarySearchTree;
-import com.cc4102.stringDict.experiment.Experiment;
 
 import java.io.File;
 

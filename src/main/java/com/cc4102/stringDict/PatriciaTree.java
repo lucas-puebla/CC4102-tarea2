@@ -15,18 +15,6 @@ public class PatriciaTree implements StringDictionary {
         this.root = new PatriciaNode("", false, null, new ArrayList<Integer>());
     }
 
-    public int getLength() {
-        return 0;
-    }
-
-    public int getSize() {
-        return 0;
-    }
-
-    public Object getRoot() {
-        return root;
-    }
-
     public ArrayList<Integer> search(String key) {
         return root.search(key);
     }

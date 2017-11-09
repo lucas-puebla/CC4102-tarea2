@@ -5,6 +5,7 @@ package com.cc4102.textSimilarity;
 
 import static org.junit.Assert.*;
 
+import com.cc4102.experiment.TextSimilarity;
 import org.junit.Test;
 
 import com.cc4102.stringDict.LinearProbingHashingTree;
