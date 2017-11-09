@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import com.cc4102.stopWatch.StopWatch;
 import com.cc4102.stringDict.LinearProbingHashingTree;
@@ -15,6 +17,7 @@ import com.cc4102.stringDict.PatriciaTree;
 import com.cc4102.stringDict.StringDictionary;
 import com.cc4102.stringDict.TernarySearchTree;
 import com.cc4102.textCleaner.TextCleaner;
+import com.cc4102.textSearcher.TextSearcher;
 import com.cc4102.textSimilarity.TextSimilarity;
 
 /**
@@ -31,6 +34,7 @@ public class Experiment {
 
   TextCleaner tc = new TextCleaner();
   TextSimilarity ts;
+  TextSearcher searcher = new TextSearcher();
 
   public void preProcessText(String text1, String text2) {
     this.text1 = tc.clean(text1);
@@ -107,8 +111,8 @@ public class Experiment {
     System.out.println("Construction2 took: " + constructionTime2 + " micro seconds");
     sw.reset();
 
-    // agregar parte de busqueda de n/10 palabras
-    // TODO
+    ArrayList<String> wordsToSearch = searcher.getRandomWords(1.0 / 10.0, words1);
+    searcher.searchForWords(wordsToSearch.toArray(new String[wordsToSearch.size()]) , sd1);
 
     // agregar parte de busqueda de palabras que no estan
     // TODO
