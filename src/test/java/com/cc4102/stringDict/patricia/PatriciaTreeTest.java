@@ -73,7 +73,6 @@ public class PatriciaTreeTest {
             assertTrue("Inserted text " + elems[i] + " and its value should be in the tree",
                     tree.search(elems[i]).contains(values[i]));
         }
-        tree.getSize();
     }
 
     @Test
