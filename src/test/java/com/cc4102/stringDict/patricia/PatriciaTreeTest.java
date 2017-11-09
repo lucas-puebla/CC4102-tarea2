@@ -97,5 +97,6 @@ public class PatriciaTreeTest {
         }
         String res[] = tree.getKeys();
         assertTrue(Arrays.asList(res).containsAll(Arrays.asList(elems)));
+        assertTrue(Arrays.asList(elems).size() == Arrays.asList(res).size());
     }
 }

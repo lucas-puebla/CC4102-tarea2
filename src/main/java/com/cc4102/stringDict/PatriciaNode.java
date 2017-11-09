@@ -67,7 +67,7 @@ class PatriciaNode {
                     found = true;
                     tookPath = true;
                     break;
-                } else if (str.substring(offset).startsWith(child.getStr())) {
+                } else if (str.substring(offset).startsWith(child.getStr()) && !child.getStr().equals("")) {
                     current = child;
                     tookPath = true;
                     offset += largestCommonPrefix(child.getStr(), str.substring(offset)).length();
@@ -124,7 +124,7 @@ class PatriciaNode {
                 if (child.getStr().equals(word.substring(offset)) && child.isTerminal()) {
                     child.getValues().add(pos);
                     return;
-                } else if (word.substring(offset).startsWith(child.getStr())) {
+                } else if (word.substring(offset).startsWith(child.getStr()) && !child.getStr().equals("")) {
                     current = child;
                     offset += largestCommonPrefix(word.substring(offset), child.getStr()).length();
                     tookPath = true;
@@ -159,7 +159,7 @@ class PatriciaNode {
     }
 
     public ArrayList<String> getKeys(String prefix, ArrayList<String> result) {
-        if (this.isTerminal()) {
+        if (this.isTerminal() && !result.contains(this.getEntireString())) {
             result.add(prefix + this.getStr());
         }
         for (PatriciaNode child : this.getChildren()) {
