@@ -26,7 +26,7 @@ public class Logger {
         }
     }
 
-    static public void logSuccSearch(String classStr, int totalSize, int wordLength, long time) {
+    public static void logSuccSearch(String classStr, int totalSize, int wordLength, long time) {
         String s = totalSize + "," + wordLength + "," + time + '\n';
         log(s, "succSearch" + classStr);
     }
@@ -34,5 +34,10 @@ public class Logger {
     public static void logUnsuccSearch(String classStr, int totalSize, int wordLength, long time) {
         String s = totalSize + "," + wordLength + "," + time + '\n';
         log(s, "unsuccSearch" + classStr);
+    }
+
+    public static void logConstructionTime(String classStr, String testStr, int words, long time) {
+        String s = words + ", " + time + '\n';
+        log(s, testStr + classStr);
     }
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import com.cc4102.logger.Logger;
 import com.cc4102.stopWatch.StopWatch;
 import com.cc4102.stringDict.LinearProbingHashingTree;
 import com.cc4102.stringDict.PatriciaTree;
@@ -140,6 +141,9 @@ public class Experiment {
     similarity = ts.getSimilarity();
     sw.stop();
     similarityTime = sw.getTime();
+    Logger.logConstructionTime(sd1.getClassStr(), "Construction", words1.length, constructionTime1);
+    Logger.logConstructionTime(sd1.getClassStr(), "Construction", words2.length, constructionTime2);
+    Logger.logConstructionTime(sd1.getClassStr(), "Similarity", words2.length, similarityTime);
     System.out.println("Text Similarity took: " + similarityTime + " micro seconds"
         + "\nSimilarity index: " + similarity);
   }
