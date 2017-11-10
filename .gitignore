@@ -92,3 +92,5 @@ hs_err_pid*
 *.iml
 .idea
 logfile.txt
+
+*.txt
