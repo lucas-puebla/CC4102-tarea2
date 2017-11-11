@@ -12,15 +12,23 @@ public class PatriciaTree implements StringDictionary {
     private PatriciaNode root;
 
     public PatriciaTree() {
-        this.root = new PatriciaNode("", false, null, new ArrayList<Integer>());
+        this.root = new PatriciaNode("", false, null, new ArrayList<Integer>(), 2);
     }
 
     public ArrayList<Integer> search(String key) {
         return root.search(key);
     }
 
+    public ArrayList<Integer> search(String key, int text) {
+        return root.search(key, text);
+    }
+
     public void insert(String word, int pos) {
         root.insert(word, pos);
+    }
+
+    public void insert(String word, int pos, int text) {
+        root.insert(word, pos, text);
     }
 
     public String[] getKeys() {
@@ -36,5 +44,9 @@ public class PatriciaTree implements StringDictionary {
     @Override
     public String getClassStr() {
         return "PatriciaTree";
+    }
+
+    public double getSimilarity() {
+        return root.getSimilarity();
     }
 }

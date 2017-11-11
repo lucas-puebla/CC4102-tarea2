@@ -5,26 +5,30 @@ import java.util.Collections;
 import java.util.HashSet;
 
 class PatriciaNode {
+    private double totalSize;
+    private double sim;
     private String str;
     private boolean isTerminal;
     private PatriciaNode father;
     private ArrayList<PatriciaNode> children;
-    private ArrayList<Integer> values;
+    private ArrayList<Integer>[] values;
 
-    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, ArrayList<Integer> values) {
+    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, ArrayList<Integer> values, int textsNum) {
         this.str = str;
         this.isTerminal = isTerminal;
         this.father = father;
         this.children = new ArrayList<PatriciaNode>();
-        this.values = new ArrayList<Integer>(values);
+        this.values = (ArrayList<Integer>[]) new ArrayList[textsNum];
+        this.values[0] = values;
+        this.values[1] = new ArrayList<Integer>();
     }
 
     public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, int value) {
-        this(str, isTerminal, father, new ArrayList<Integer>(Collections.singletonList(value)));
+        this(str, isTerminal, father, new ArrayList<Integer>(Collections.singletonList(value)), 2);
     }
 
     public PatriciaNode(String str, boolean isTerminal, PatriciaNode father) {
-        this(str, isTerminal, father, new ArrayList<Integer>());
+        this(str, isTerminal, father, new ArrayList<Integer>(), 2);
     }
 
     public PatriciaNode() {
@@ -56,6 +60,10 @@ class PatriciaNode {
     }
 
     protected ArrayList<Integer> search(String str) {
+        return search(str, 0);
+    }
+
+    protected ArrayList<Integer> search(String str, int text) {
         int offset = 0;
         PatriciaNode current = this;
         boolean found = false;
@@ -64,7 +72,7 @@ class PatriciaNode {
             boolean tookPath = false;
             for (PatriciaNode child : current.children) {
                 if (child.getStr().equals(str.substring(offset)) && child.isTerminal()) {
-                    result.addAll(child.getValues());
+                    result.addAll(child.getValues(text));
                     found = true;
                     tookPath = true;
                     break;
@@ -102,8 +110,8 @@ class PatriciaNode {
         return (a.substring(0, minLength));
     }
 
-    public ArrayList<Integer> getValues() {
-        return values;
+    public ArrayList<Integer> getValues(int i) {
+        return values[i];
     }
 
     public void removeChild(PatriciaNode child) {
@@ -116,6 +124,10 @@ class PatriciaNode {
     }
 
     public void insert(String word, int pos) {
+        insert(word, pos, 0);
+    }
+
+    public void insert(String word, int pos, int text) {
         int offset = 0;
         PatriciaNode current = this;
         boolean found = false;
@@ -123,7 +135,7 @@ class PatriciaNode {
             boolean tookPath = false;
             for (PatriciaNode child : current.children) {
                 if (child.getStr().equals(word.substring(offset)) && child.isTerminal()) {
-                    child.getValues().add(pos);
+                    child.getValues(text).add(pos);
                     return;
                 } else if (word.substring(offset).startsWith(child.getStr()) && !child.getStr().equals("")) {
                     current = child;
@@ -141,7 +153,7 @@ class PatriciaNode {
                         child.setStr(child.getStr().substring(lcp.length()));
                     } else {
                         newNode.setTerminal(true);
-                        newNode.getValues().add(pos);
+                        newNode.getValues(text).add(pos);
                         String str = child.getEntireString().replace(word, "");
                         child.setStr(str);
                     }
@@ -171,5 +183,29 @@ class PatriciaNode {
 
     public ArrayList<PatriciaNode> getChildren() {
         return children;
+    }
+
+    public double getSimilarity() {
+        this.addSim(this);
+        return 1.0 - (sim / totalSize);
+    }
+
+    private void addSim(PatriciaNode patriciaNode) {
+        if (this.isTerminal()) {
+            int firstSize = getValues(0).size();
+            int secondSize = getValues(1).size();
+            patriciaNode.addToSize(firstSize + secondSize);
+            patriciaNode.addToSim(Math.abs(firstSize - secondSize));
+        }
+        for (PatriciaNode child : children)
+            child.addSim(patriciaNode);
+    }
+
+    private void addToSim(int abs) {
+        this.sim += abs;
+    }
+
+    private void addToSize(int i) {
+        this.totalSize += i;
     }
 }
