@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.cc4102.stringDict.linearProbing;
+package com.cc4102.stringDict;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -10,6 +10,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 
+import com.cc4102.stringDict.linearProbing.Par;
 import org.junit.Test;
 
 import com.cc4102.stringDict.LinearProbingHashingTree;

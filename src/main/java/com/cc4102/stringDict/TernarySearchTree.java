@@ -13,6 +13,10 @@ public class TernarySearchTree implements StringDictionary {
     return root.search(key + "$");
   }
 
+  public void insert(String word, int pos, int text) {
+    // TODO
+  }
+
   public void insert(String word, int pos) {
     root.insert(word + "$", pos);
   }
@@ -29,6 +33,11 @@ public class TernarySearchTree implements StringDictionary {
 
   public String getClassStr() {
     return "TernarySearchTree";
+  }
+
+  public double getSimilarity() {
+    // TODO
+    return 0;
   }
 
   public String toString() {
