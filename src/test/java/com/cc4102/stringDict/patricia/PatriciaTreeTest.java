@@ -98,4 +98,15 @@ public class PatriciaTreeTest {
         assertTrue(Arrays.asList(res).containsAll(Arrays.asList(elems)));
         assertTrue(Arrays.asList(elems).size() == Arrays.asList(res).size());
     }
+
+    @Test
+    public void getSimilarity() {
+        String first[] = {"hola", "estos", "textos", "son", "similares"};
+        String second[] = {"hola", "estos", "textos", "son", "similares"};
+        for (int i = 0; i < first.length; i++) {
+            tree.insert(first[i], 0, 0);
+            tree.insert(second[i], 0, 1);
+        }
+        assertEquals("Both texts are the same, so they should have 1.0 of similarity", 1.0, tree.getSimilarity());
+    }
 }
