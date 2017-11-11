@@ -10,6 +10,7 @@ import java.util.ArrayList;
  *
  */
 public interface StringDictionary {
+
   /**
    * Searches within dictionary the key occurrence positions 
    * @param key
@@ -21,7 +22,7 @@ public interface StringDictionary {
    * @param word
    * @param pos
    */
-  void insert(String word, int pos);
+  void insert(String word, int pos, int text);
 
   /**
    * @return
@@ -35,4 +36,9 @@ public interface StringDictionary {
   int count(String key);
 
   String getClassStr();
+
+  /**
+   * @return
+   */
+  double getSimilarity();
 }

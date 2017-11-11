@@ -1,4 +1,4 @@
-package com.cc4102.stringDict.patricia;
+package com.cc4102.stringDict;
 
 import com.cc4102.stringDict.PatriciaTree;
 import com.cc4102.stringDict.StringDictionary;
