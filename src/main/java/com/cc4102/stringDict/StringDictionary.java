@@ -16,7 +16,7 @@ public interface StringDictionary {
    * @param key
    * @return
    */
-  ArrayList<Integer> search(String key);
+  ArrayList<Integer> search(String key, int text);
 
   /**
    * @param word
@@ -28,12 +28,6 @@ public interface StringDictionary {
    * @return
    */
   String[] getKeys();
-
-  /**
-   * @param key
-   * @return
-   */
-  int count(String key);
 
   String getClassStr();
 

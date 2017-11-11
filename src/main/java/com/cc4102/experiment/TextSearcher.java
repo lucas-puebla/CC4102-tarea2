@@ -9,11 +9,10 @@ public class TextSearcher {
 
     private TernarySearchTree tree = new TernarySearchTree();
     StopWatch sw = new StopWatch();
-    Logger log = new Logger();
 
     public ArrayList<String> getRandomWords(double fraction, String[] text) {
         for (String word : text) {
-            tree.insert(word, 0);
+            tree.insert(word, 0, 0);
         }
         List<String> keys = Arrays.asList(tree.getKeys());
         Collections.shuffle(keys);
@@ -29,7 +28,7 @@ public class TextSearcher {
         int length = words.length * 10;
         for(int i = 0; i < words.length; i++) {
             sw.start();
-            dict.search(words[i]);
+            dict.search(words[i], 0);
             sw.stop();
             Logger.logSuccSearch(dict.getClassStr(), length, words[i].length(), sw.getTime());
         }
@@ -38,9 +37,9 @@ public class TextSearcher {
     public void unsuccessfulSearch(String[] words, StringDictionary dict, int searches) {
         for(int i = 0; i < searches; i++) {
             sw.start();
-            dict.search(words[i]);
+            dict.search(words[i], 0);
             sw.stop();
-            Logger.logUnsuccSearch(dict.getClassStr(), searches, words[i].length(), sw.getTime());
+            Logger.logUnsuccSearch(dict.getClassStr(), searches*10, words[i].length(), sw.getTime());
         }
     }
 }

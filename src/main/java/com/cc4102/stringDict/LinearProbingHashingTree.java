@@ -333,6 +333,16 @@ public class LinearProbingHashingTree implements StringDictionary {
     return values;
   }
 
+  @Override
+  public ArrayList<Integer> search(String key, int text) {
+    return null; // TODO
+  }
+
+  @Override
+  public void insert(String word, int pos, int text) {
+    // TODO
+  }
+
   /**
    * TODO
    */
@@ -362,6 +372,11 @@ public class LinearProbingHashingTree implements StringDictionary {
   @Override
   public String getClassStr() {
     return "LinearProbingHashingTree";
+  }
+
+  @Override
+  public double getSimilarity() {
+    return 0; // TODO
   }
 
 

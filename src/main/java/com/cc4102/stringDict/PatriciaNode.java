@@ -187,6 +187,9 @@ class PatriciaNode {
 
     public double getSimilarity() {
         this.addSim(this);
+
+        System.out.println(sim + " " + totalSize);
+
         return 1.0 - (sim / totalSize);
     }
 

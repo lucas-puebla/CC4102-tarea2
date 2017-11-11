@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.cc4102.experiment;
 
@@ -12,21 +12,18 @@ import com.cc4102.stringDict.StringDictionary;
 
 /**
  * @author Lucas Puebla Silva
- *
+ *         <p>
  *         Clase que permite realizar experimentos.
  */
 public class Experiment {
 
-  StopWatch sw = new StopWatch();
-  int hashLength = (int) Math.pow(2, 20);
-  // Este valor puede variar en funcion de la cantidad de palabras!
-  String text1, text2;
-  String spanishWords;
+  private String text1, text2;
+  private String spanishWords;
 
-  TextCleaner tc = new TextCleaner();
-  TextSimilarity ts;
-  TextSearcher searcher = new TextSearcher();
-  String[] wordsToSearch;
+  private StopWatch sw = new StopWatch();
+  private TextCleaner tc = new TextCleaner();
+  private TextSearcher searcher = new TextSearcher();
+  private String[] wordsToSearch;
 
   public void preProcessText(String text1, String text2) {
     this.text1 = tc.clean(text1);
@@ -36,21 +33,21 @@ public class Experiment {
   public boolean preProcessTextFile(String path1, String path2, String path3) {
     boolean read1 = true, read2 = true, read3 = true;
     try {
-      text1 = tc.clean(this.readFile(path1));
+      text1 = tc.clean(readFile(path1));
     } catch (Exception e) {
       read1 = false;
       e.printStackTrace();
       System.out.println("Wrong path1, could not read any file");
     }
     try {
-      text2 = tc.clean(this.readFile(path2));
+      text2 = tc.clean(readFile(path2));
     } catch (Exception e) {
       read2 = false;
       e.printStackTrace();
       System.out.println("Wrong path2, could not read any file");
     }
     try {
-      spanishWords = tc.clean(this.readFile(path3));
+      spanishWords = tc.clean(readFile(path3));
     } catch (Exception e) {
       read3 = false;
       e.printStackTrace();
@@ -83,55 +80,56 @@ public class Experiment {
     return sb.toString();
   }
 
-  private StringDictionary insertText(StringDictionary sd, String[] words) {
+  private void insertText(StringDictionary sd, String[] words, int text) {
     for (int i = 0; i < words.length; i++) {
-      sd.insert(words[i], i);
+      sd.insert(words[i], i, text);
     }
-
-    return sd;
   }
 
-  public void runTest(StringDictionary sd1, StringDictionary sd2, StringDictionary sdType) {
-    long constructionTime1, succesfulSearchTime1, unsuccesfulSearchTime1, similarityTime,
-        constructionTime2, succesfulSearchTime2, unsuccesfulSearchTime2;
-    double similarity = 0;
+  public void runTest(StringDictionary dict) {
+    long constructionTime1, constructionTime2, similarityTime;
+    double similarity;
     String[] words1 = text1.split(" ");
     String[] words2 = text2.split(" ");
 
-
-
     // construction
     sw.start();
-    sd1 = insertText(sd1, words1);
+    insertText(dict, words1, 0);
     sw.stop();
     constructionTime1 = sw.getTime();
     System.out.println("Construction1 took: " + constructionTime1 + " micro seconds");
-    sw.reset();
 
+    /*
+    // busquedas exitosas
     sw.start();
-    sd2 = insertText(sd2, words2);
+    searcher.searchForWords(wordsToSearch, dict);
+    sw.stop();
+    System.out.println("succesfull searches took: " + sw.getTime() + " micro seconds");
+
+    // busquedas infructuosas
+    sw.start();
+    searcher.unsuccessfulSearch(spanishWords.split(" "), dict, wordsToSearch.length);
+    sw.stop();
+    System.out.println("unsuccesfull searches took: " + sw.getTime() + " micro seconds");
+    */
+
+    // agregar segundo texto para text similarity
+    sw.start();
+    insertText(dict, words2, 1);
     sw.stop();
     constructionTime2 = sw.getTime();
     System.out.println("Construction2 took: " + constructionTime2 + " micro seconds");
-    sw.reset();
 
-    // movido a preprocess para que sea igual para todos.
-    // ArrayList<String> wordsToSearch = searcher.getRandomWords(1.0 / 10.0, words1);
-    searcher.searchForWords(wordsToSearch, sd1);
-
-    searcher.unsuccessfulSearch(spanishWords.split(" "), sd1, wordsToSearch.length);
-
-    // TextSimilarity
-    ts = new TextSimilarity(text1, text2);
-    ts.setStringDictType(sdType);
-    ts.execute();
+    // text similarity
     sw.start();
-    similarity = ts.getSimilarity();
+    similarity = dict.getSimilarity();
     sw.stop();
     similarityTime = sw.getTime();
-    Logger.logConstructionTime(sd1.getClassStr(), "Construction", words1.length, constructionTime1);
-    Logger.logConstructionTime(sd1.getClassStr(), "Construction", words2.length, constructionTime2);
-    Logger.logConstructionTime(sd1.getClassStr(), "Similarity", words2.length, similarityTime);
+
+    // registrar tiempos
+    Logger.logConstructionTime(dict.getClassStr(), "Construction", words1.length, constructionTime1);
+    Logger.logConstructionTime(dict.getClassStr(), "Similarity", words1.length, similarityTime);
+
     System.out.println("Text Similarity took: " + similarityTime + " micro seconds"
         + "\nSimilarity index: " + similarity);
   }

@@ -9,26 +9,18 @@ public class TernarySearchTree implements StringDictionary {
     root = new TSTreeNode();
   }
 
-  public ArrayList<Integer> search(String key) {
-    return root.search(key + "$");
+  public ArrayList<Integer> search(String key, int text) {
+    return root.search(key + "$", text);
   }
 
   public void insert(String word, int pos, int text) {
-    // TODO
-  }
-
-  public void insert(String word, int pos) {
-    root.insert(word + "$", pos);
+    root.insert(word + "$", pos, text);
   }
 
   public String[] getKeys() {
     ArrayList<String> keys = new ArrayList<String>();
-    root.addKeys("", keys);
+    root.getKeys("", keys);
     return keys.toArray(new String[keys.size()]);
-  }
-
-  public int count(String key) {
-    return root.count(key + "$");
   }
 
   public String getClassStr() {
@@ -36,8 +28,12 @@ public class TernarySearchTree implements StringDictionary {
   }
 
   public double getSimilarity() {
-    // TODO
-    return 0;
+    double[] sums = new double[2];
+    root.getSimilarity(sums);
+
+    System.out.println(sums[0] + " " + sums[1]);
+
+    return 1 - sums[0] / sums[1];
   }
 
   public String toString() {

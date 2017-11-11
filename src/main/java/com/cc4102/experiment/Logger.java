@@ -1,7 +1,5 @@
 package com.cc4102.experiment;
 
-import com.cc4102.stringDict.StringDictionary;
-
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
