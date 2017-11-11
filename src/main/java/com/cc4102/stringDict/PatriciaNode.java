@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 
 class PatriciaNode {
-    private double totalSize;
-    private double sim;
     private String str;
     private boolean isTerminal;
     private PatriciaNode father;
@@ -186,29 +184,19 @@ class PatriciaNode {
     }
 
     public double getSimilarity() {
-        this.addSim(this);
-
-        System.out.println(sim + " " + totalSize);
-
-        return 1.0 - (sim / totalSize);
+        double[] sim = new double[2];
+        this.addSim(sim);
+        return 1.0 - (sim[0] / sim[1]);
     }
 
-    private void addSim(PatriciaNode patriciaNode) {
+    private void addSim(double[] sim) {
         if (this.isTerminal()) {
             int firstSize = getValues(0).size();
             int secondSize = getValues(1).size();
-            patriciaNode.addToSize(firstSize + secondSize);
-            patriciaNode.addToSim(Math.abs(firstSize - secondSize));
+            sim[1] += firstSize + secondSize;
+            sim[0] += Math.abs(firstSize - secondSize);
         }
         for (PatriciaNode child : children)
-            child.addSim(patriciaNode);
-    }
-
-    private void addToSim(int abs) {
-        this.sim += abs;
-    }
-
-    private void addToSize(int i) {
-        this.totalSize += i;
+            child.addSim(sim);
     }
 }
