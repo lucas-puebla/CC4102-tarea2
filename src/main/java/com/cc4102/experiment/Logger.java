@@ -1,7 +1,5 @@
 package com.cc4102.experiment;
 
-import com.cc4102.stringDict.StringDictionary;
-
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,7 +14,7 @@ public class Logger {
 
     private static void log(String s, String fileName) {
         byte data[] = s.getBytes();
-        Path p = Paths.get("./" + fileName + ".csv");
+        Path p = Paths.get("./resultados/" + fileName + ".csv");
 
         try (OutputStream out = new BufferedOutputStream(
                 Files.newOutputStream(p, CREATE, APPEND))) {

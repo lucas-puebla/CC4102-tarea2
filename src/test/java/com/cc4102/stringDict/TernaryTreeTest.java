@@ -1,7 +1,5 @@
-package com.cc4102.stringDict.ternary;
+package com.cc4102.stringDict;
 
-import com.cc4102.stringDict.StringDictionary;
-import com.cc4102.stringDict.TernarySearchTree;
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ package com.cc4102.stringDict;
 
 import java.util.ArrayList;
 
-import com.cc4102.stringDict.linearProbing.Par;
+import com.cc4102.stringDict.linearProbing.Trio;
 
 /**
  * @author Lucas Puebla Silva
@@ -16,7 +16,8 @@ public class LinearProbingHashingTree implements StringDictionary {
   private int hashLength;
   private int hashOccupation;
   private int maxOccupation;
-  private Par[] hashTable;
+  private Trio[] hashTable;
+
 
   /**
    * 
@@ -33,7 +34,8 @@ public class LinearProbingHashingTree implements StringDictionary {
     hashLength = hl < 8 ? 8 : hl;
     hashOccupation = 0;
     maxOccupation = hashLength > 0 ? (int) (hashLength * 0.4) : 1;
-    hashTable = new Par[hashLength];
+    hashTable = new Trio[hashLength];
+
   }
 
   /**
@@ -74,7 +76,7 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return
    */
-  public Par[] getHashTable() {
+  public Trio[] getHashTable() {
     return hashTable;
   }
 
@@ -83,7 +85,7 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @param elem String corresponding to the key.
    */
-  public boolean contains(String elem) {
+  public boolean contains(String elem, int text) {
     boolean contains = false;
     int hash = this.getHash(elem);
     int offset = 0;
@@ -111,7 +113,7 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param elem String corresponding to the key.
    * @return
    */
-  public int searchCount(String elem) {
+  public int searchCount(String elem, int text) {
     int hash = this.getHash(elem);
     int offset = 0;
     while (offset < hashLength) {
@@ -136,18 +138,18 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @param elem corresponds to a Par object to be inserted.
    */
-  private void insert(Par elem) {
-    if (hashOccupation == maxOccupation - 1 || maxOccupation == 0) {
+  private void insert(Trio elem) {
+    if (hashOccupation == maxOccupation - 1) {
       this.rehash();
     }
     String key = elem.getKey();
-    ArrayList<Integer> values = elem.getValues();
+    Object[] values = elem.getValues();
     int hash = getHash(key);
     int offset = 0;
     while (hashTable[(hash + offset) % hashLength] != null && offset < hashLength) {
       offset++;
     }
-    hashTable[(hash + offset) % hashLength] = new Par(key, values);
+    hashTable[(hash + offset) % hashLength] = new Trio(key, values);
     hashOccupation++;
   }
 
@@ -164,8 +166,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param word is the key
    * @param pos is the position of the ocurrence of the key
    */
-  public void insert(String word, int pos) {
-    if (hashOccupation == maxOccupation - 1 || maxOccupation == 0) {
+  public void insert(String word, int pos, int text) {
+    if (hashOccupation == maxOccupation - 1) {
       this.rehash();
     }
     int hash = getHash(word);
@@ -180,9 +182,9 @@ public class LinearProbingHashingTree implements StringDictionary {
       }
     }
     if (repeated) {
-      hashTable[(hash + offset) % hashLength].addVal(pos);
+      hashTable[(hash + offset) % hashLength].addVal(pos, text);
     } else {
-      hashTable[(hash + offset) % hashLength] = new Par(word, pos);
+      hashTable[(hash + offset) % hashLength] = new Trio(word, pos, text);
       hashOccupation++;
     }
   }
@@ -195,10 +197,10 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return
    */
-  private Par[] extract() {
-    Par[] tmp = new Par[hashOccupation + 1];
+  private Trio[] extract() {
+    Trio[] tmp = new Trio[hashOccupation + 1];
     int i = 0;
-    for (Par elem : hashTable) {
+    for (Trio elem : hashTable) {
       if (elem != null)
         tmp[i++] = elem;
     }
@@ -214,10 +216,9 @@ public class LinearProbingHashingTree implements StringDictionary {
    */
   private void update() {
     hashLength = 2 * hashLength;
-    // maxOccupation = hashLength > 1 ? (int) (hashLength * 0.4) : 1;
     maxOccupation = (int) (hashLength * 0.4);
     hashOccupation = 0;
-    hashTable = new Par[hashLength];
+    hashTable = new Trio[hashLength];
   }
 
 
@@ -229,15 +230,16 @@ public class LinearProbingHashingTree implements StringDictionary {
    * </p>
    */
   private void rehash() {
-    Par[] tmp = this.extract();
+    Trio[] tmp = this.extract();
 
     this.update();
 
-    for (Par elem : tmp) {
+    for (Trio elem : tmp) {
       if (elem != null)
         this.insert(elem);
     }
   }
+
 
   /**
    * For testing purposes only!
@@ -250,8 +252,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param elem is the key
    * @param pos is the position of the occurrence of the key
    */
-  public void insertAtEnd(String elem, int pos) {
-    if (hashOccupation >= maxOccupation || maxOccupation == 0) {
+  public void insertAtEnd(String elem, int pos, int text) {
+    if (hashOccupation >= maxOccupation) {
       this.rehash();
     }
     int hash = hashLength - 1;
@@ -259,7 +261,7 @@ public class LinearProbingHashingTree implements StringDictionary {
     while (hashTable[(hash + offset) % hashLength] != null && offset < hashLength) {
       offset++;
     }
-    hashTable[(hash + offset) % hashLength] = new Par(elem, pos);
+    hashTable[(hash + offset) % hashLength] = new Trio(elem, pos, text);
     hashOccupation++;
   }
 
@@ -314,9 +316,9 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param key is the key
    * @return the occurrences or an empty ArrayList<Integer if the word does not exist
    */
-  public ArrayList<Integer> search(String key) {
+  public ArrayList<Integer> search(String key, int text) {
     ArrayList<Integer> values = new ArrayList<Integer>();
-    Par tmp;
+    Trio tmp;
     int hash = this.getHash(key);
     int offset = 0;
     while (offset < hashLength) {
@@ -325,7 +327,7 @@ public class LinearProbingHashingTree implements StringDictionary {
         break;
       }
       if (key.equals(tmp.getKey())) {
-        values = tmp.getValues();
+        values = tmp.getValues(text);
         break;
       }
       offset++;
@@ -334,12 +336,13 @@ public class LinearProbingHashingTree implements StringDictionary {
   }
 
   /**
-   * TODO
+   * Finds all of the non-null elements inside the hashTable and returns them
+   * as a list of Strings
    */
   public String[] getKeys() {
     String[] tmp = new String[hashOccupation];
     int i = 0;
-    for (Par elem : hashTable) {
+    for (Trio elem : hashTable) {
       if (elem != null) {
         tmp[i++] = elem.getKey();
       }
@@ -348,20 +351,38 @@ public class LinearProbingHashingTree implements StringDictionary {
   }
 
   /**
-   * TODO
+   * Counts the number of occurrences of the key in the text text.
+   * 
+   * @param key is the String to be searched
+   * @param text is the number of the text {0, 1}
+   * @return the number of occurrences of key in text
    */
-  public int count(String key) {
+  public int count(String key, int text) {
     int res = 0;
-    ArrayList<Integer> tmp = this.search(key);
+    ArrayList<Integer> tmp = this.search(key, text);
     if (tmp != null) {
       res = tmp.size();
     }
     return res;
   }
 
-  @Override
   public String getClassStr() {
     return "LinearProbingHashingTree";
+  }
+
+  /**
+   * Calculates the similarity index between the 2 texts.
+   * @return the similarity index, which is between [0,1]
+   */
+  public double getSimilarity() {
+    double sum[] = new double[2];
+    for (Trio elem : hashTable) {
+      if (elem != null) {
+        sum[0] += Math.abs(elem.count(0) - elem.count(1));
+        sum[1] += elem.count(0) + elem.count(1);
+      }
+    }
+    return 1 - sum[0] / sum[1];
   }
 
 

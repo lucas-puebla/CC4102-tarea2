@@ -9,26 +9,29 @@ class PatriciaNode {
     private boolean isTerminal;
     private PatriciaNode father;
     private ArrayList<PatriciaNode> children;
-    private ArrayList<Integer> values;
+    private ArrayList<Integer>[] values;
 
-    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, ArrayList<Integer> values) {
+    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, ArrayList<Integer> values, int text) {
         this.str = str;
         this.isTerminal = isTerminal;
         this.father = father;
         this.children = new ArrayList<PatriciaNode>();
-        this.values = new ArrayList<Integer>(values);
+        this.values = (ArrayList<Integer>[]) new ArrayList[2];
+        this.values[0] = new ArrayList<Integer>();
+        this.values[1] = new ArrayList<Integer>();
+        this.values[text] = values;
     }
 
-    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, int value) {
-        this(str, isTerminal, father, new ArrayList<Integer>(Collections.singletonList(value)));
+    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, int value, int text) {
+        this(str, isTerminal, father, new ArrayList<Integer>(Collections.singletonList(value)), text);
     }
 
-    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father) {
-        this(str, isTerminal, father, new ArrayList<Integer>());
+    public PatriciaNode(String str, boolean isTerminal, PatriciaNode father, int text) {
+        this(str, isTerminal, father, new ArrayList<Integer>(), text);
     }
 
     public PatriciaNode() {
-        this("", false, null, -1);
+        this("", false, null, -1, 0);
     }
 
     protected String getStr() {
@@ -56,6 +59,10 @@ class PatriciaNode {
     }
 
     protected ArrayList<Integer> search(String str) {
+        return search(str, 0);
+    }
+
+    protected ArrayList<Integer> search(String str, int text) {
         int offset = 0;
         PatriciaNode current = this;
         boolean found = false;
@@ -64,7 +71,7 @@ class PatriciaNode {
             boolean tookPath = false;
             for (PatriciaNode child : current.children) {
                 if (child.getStr().equals(str.substring(offset)) && child.isTerminal()) {
-                    result.addAll(child.getValues());
+                    result.addAll(child.getValues(text));
                     found = true;
                     tookPath = true;
                     break;
@@ -102,8 +109,8 @@ class PatriciaNode {
         return (a.substring(0, minLength));
     }
 
-    public ArrayList<Integer> getValues() {
-        return values;
+    public ArrayList<Integer> getValues(int i) {
+        return values[i];
     }
 
     public void removeChild(PatriciaNode child) {
@@ -116,6 +123,10 @@ class PatriciaNode {
     }
 
     public void insert(String word, int pos) {
+        insert(word, pos, 0);
+    }
+
+    public void insert(String word, int pos, int text) {
         int offset = 0;
         PatriciaNode current = this;
         boolean found = false;
@@ -123,7 +134,7 @@ class PatriciaNode {
             boolean tookPath = false;
             for (PatriciaNode child : current.children) {
                 if (child.getStr().equals(word.substring(offset)) && child.isTerminal()) {
-                    child.getValues().add(pos);
+                    child.getValues(text).add(pos);
                     return;
                 } else if (word.substring(offset).startsWith(child.getStr()) && !child.getStr().equals("")) {
                     current = child;
@@ -134,14 +145,14 @@ class PatriciaNode {
                     String lcp = largestCommonPrefix(word.substring(offset), child.getStr());
                     offset += lcp.length();
                     String newWord = word.substring(offset);
-                    PatriciaNode newNode = new PatriciaNode(lcp, current.isTerminal(), current);
+                    PatriciaNode newNode = new PatriciaNode(lcp, current.isTerminal(), current, text);
                     if (newWord.length() > 0) {
-                        PatriciaNode insertedNode = new PatriciaNode(newWord, true, current, pos);
+                        PatriciaNode insertedNode = new PatriciaNode(newWord, true, current, pos, text);
                         newNode.addChild(insertedNode);
                         child.setStr(child.getStr().substring(lcp.length()));
                     } else {
                         newNode.setTerminal(true);
-                        newNode.getValues().add(pos);
+                        newNode.getValues(text).add(pos);
                         String str = child.getEntireString().replace(word, "");
                         child.setStr(str);
                     }
@@ -152,7 +163,7 @@ class PatriciaNode {
                 }
             }
             if (!tookPath) {
-                PatriciaNode newNode = new PatriciaNode(word.substring(offset), true, current, pos);
+                PatriciaNode newNode = new PatriciaNode(word.substring(offset), true, current, pos, text);
                 current.addChild(newNode);
                 return;
             }
@@ -171,5 +182,22 @@ class PatriciaNode {
 
     public ArrayList<PatriciaNode> getChildren() {
         return children;
+    }
+
+    public double getSimilarity() {
+        double[] sim = new double[2];
+        this.addSim(sim);
+        return 1.0 - (sim[0] / sim[1]);
+    }
+
+    private void addSim(double[] sim) {
+        if (this.isTerminal()) {
+            int firstSize = getValues(0).size();
+            int secondSize = getValues(1).size();
+            sim[1] += firstSize + secondSize;
+            sim[0] += Math.abs(firstSize - secondSize);
+        }
+        for (PatriciaNode child : this.getChildren())
+            child.addSim(sim);
     }
 }

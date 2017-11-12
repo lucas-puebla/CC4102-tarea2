@@ -3,15 +3,17 @@ package com.cc4102.stringDict;
 import java.util.ArrayList;
 
 class TSTreeNode {
+
   private char key;
-  private ArrayList<Integer> values;
+  private ArrayList<Integer> values1;
+  private ArrayList<Integer> values2;
   private TSTreeNode left, right, son;
   private boolean empty;
 
   TSTreeNode() {
     empty = true;
     key = 0;
-    values = null;
+    values1 = values2 = null;
     left = right = son = null;
   }
 
@@ -19,45 +21,52 @@ class TSTreeNode {
     empty = false;
 
     this.key = key;
-    values = null;
     left = new TSTreeNode();
     right = new TSTreeNode();
     son = new TSTreeNode();
   }
 
-  private void initLeaf(char key, int value) {
+  private void initLeaf(char key, int value, int text) {
     initNode(key);
-    values = new ArrayList<Integer>();
-    values.add(value);
+    values1 = new ArrayList<Integer>();
+    values2 = new ArrayList<Integer>();
+    addValue(value, text);
   }
 
-  public ArrayList<Integer> search(String s) {
+  public ArrayList<Integer> search(String word, int text) {
     if (empty) // not found
       return new ArrayList<Integer>(); // empty
 
-    char first = s.charAt(0);
+    char first = word.charAt(0);
 
     if (first == key) {
       // word found
-      if (s.length() == 1)
-        return values;
+      if (word.length() == 1)
+        return getValues(text);
 
       // recursive calls
-      return son.search(s.substring(1));
+      return son.search(word.substring(1), text);
     } else if (first < key) {
-      return left.search(s);
+      return left.search(word, text);
     } else {
-      return right.search(s);
+      return right.search(word, text);
     }
   }
 
-  public void insert(String word, int pos) {
+  private ArrayList<Integer> getValues(int text) {
+    if (text == 0)
+      return values1;
+    else
+      return values2;
+  }
+
+  public void insert(String word, int pos, int text) {
     char first = word.charAt(0);
 
     // initialize empty nodes
     if (empty) {
       if (word.length() == 1) {
-        initLeaf(first, pos);
+        initLeaf(first, pos, text);
         return;
       } else {
         initNode(first);
@@ -67,16 +76,23 @@ class TSTreeNode {
     if (first == key) {
       // word already in
       if (word.length() == 1) {
-        values.add(pos);
+        addValue(pos, text);
         return;
       }
       // recursive calls
-      son.insert(word.substring(1), pos);
+      son.insert(word.substring(1), pos, text);
     } else if (first < key) {
-      left.insert(word, pos);
+      left.insert(word, pos, text);
     } else {
-      right.insert(word, pos);
+      right.insert(word, pos, text);
     }
+  }
+
+  private void addValue(int pos, int text) {
+    if (text == 0)
+      values1.add(pos);
+    else
+      values2.add(pos);
   }
 
   public int getSize() {
@@ -85,20 +101,30 @@ class TSTreeNode {
     return 1 + son.getSize() + left.getSize() + right.getSize();
   }
 
-  void addKeys(String prefix, ArrayList<String> keys) {
+  void getKeys(String prefix, ArrayList<String> keys) {
     if (empty)
       return;
 
-    if (values != null)
+    if (values1 != null)
       keys.add(prefix);
 
-    left.addKeys(prefix, keys);
-    son.addKeys(prefix + String.valueOf(key), keys);
-    right.addKeys(prefix, keys);
+    left.getKeys(prefix, keys);
+    son.getKeys(prefix + String.valueOf(key), keys);
+    right.getKeys(prefix, keys);
   }
 
-  public int count(String key) {
-    return search(key).size();
+  void getSimilarity(double[] sums) {
+    if (empty)
+      return;
+
+    if (values1 != null) {
+      sums[0] += Math.abs(values1.size() - values2.size());
+      sums[1] += values1.size() + values2.size();
+    }
+
+    left.getSimilarity(sums);
+    son.getSimilarity(sums);
+    right.getSimilarity(sums);
   }
 
   @Override
@@ -116,9 +142,11 @@ class TSTreeNode {
     StringBuilder sb = new StringBuilder();
 
     sb.append(key);
-    if (values != null) {
+    if (values1 != null) {
       sb.append(" ");
-      sb.append(values);
+      sb.append(values1);
+      sb.append(", ");
+      sb.append(values2);
     }
     sb.append("\n");
 
