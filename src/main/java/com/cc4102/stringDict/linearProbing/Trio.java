@@ -9,10 +9,10 @@ import java.util.ArrayList;
  * @author Lucas Puebla Silva
  *
  */
-public class Par {
+public class Trio {
   
   private String key;
-  private ArrayList<Integer> values;
+  private Object[] values;
 
   /**
    * 
@@ -25,10 +25,13 @@ public class Par {
    * @param key is the key String
    * @param pos is the position of the occurrence of the key
    */
-  public Par(String key, int pos) {
+  @SuppressWarnings("unchecked")
+  public Trio(String key, int pos, int text) {
     this.key = key;
-    values = new ArrayList<Integer>();
-    values.add(pos);
+    values = new Object[2];
+    values[0] = new ArrayList<Integer>();
+    values[1] = new ArrayList<Integer>();
+    ((ArrayList<Integer>) values[text]).add(pos);
   }
   
 
@@ -42,7 +45,7 @@ public class Par {
    * @param key is the key
    * @param values are the positions of the key occurrences
    */
-  public Par(String key, ArrayList<Integer> values) {
+  public Trio(String key, Object[] values) {
     this.key = key;
     this.values = values;
   }
@@ -60,7 +63,12 @@ public class Par {
    * Getter for the values instance variable.
    * @return values
    */
-  public ArrayList<Integer> getValues() {
+  @SuppressWarnings("unchecked")
+  public ArrayList<Integer> getValues(int text) {
+    return (ArrayList<Integer>) values[text];
+  }
+  
+  public Object[] getValues() {
     return values;
   }
 
@@ -72,8 +80,9 @@ public class Par {
    * </p>
    * @param newPos is the new position of the occurrence
    */
-  public void addVal(int newPos) {
-    values.add(newPos);
+  @SuppressWarnings("unchecked")
+  public void addVal(int newPos, int text) {
+    ((ArrayList<Integer>) values[text]).add(newPos);
   }
 
 
@@ -81,8 +90,9 @@ public class Par {
    * Gives the total number of occurrences of the key.
    * @return the size of values
    */
-  public int count() {
-    return values.size();
+  @SuppressWarnings("unchecked")
+  public int count(int text) {
+    return ((ArrayList<Integer>) values[text]).size();
   }
 
 }
