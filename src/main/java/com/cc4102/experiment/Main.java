@@ -45,13 +45,13 @@ public class Main {
     // diccionario
     StringDictionary dict;
 
-    /*
+    
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning LinearProbingHashingTree test " + i + "...");
       dict = new LinearProbingHashingTree(8);
       exp.runTest(dict);
     }
-    */
+    
 
     for (int i = 0; i < reps; i++) {
       System.out.println("\nRunning PatriciaTree test " + i + "...");;
