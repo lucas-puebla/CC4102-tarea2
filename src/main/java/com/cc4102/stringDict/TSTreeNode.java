@@ -27,7 +27,6 @@ class TSTreeNode {
   }
 
   private void initLeaf(char key, int value, int text) {
-    int[] a = new int[2];
     initNode(key);
     values1 = new ArrayList<Integer>();
     values2 = new ArrayList<Integer>();
