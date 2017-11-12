@@ -5,7 +5,7 @@ package com.cc4102.stringDict;
 
 import java.util.ArrayList;
 
-import com.cc4102.stringDict.linearProbing.Par;
+import com.cc4102.stringDict.linearProbing.Trio;
 
 /**
  * @author Lucas Puebla Silva
@@ -13,10 +13,10 @@ import com.cc4102.stringDict.linearProbing.Par;
  */
 public class LinearProbingHashingTree implements StringDictionary {
 
-  private int[] hashLength;
-  private int[] hashOccupation;
-  private int[] maxOccupation;
-  private Par[][] hashTable;
+  private int hashLength;
+  private int hashOccupation;
+  private int maxOccupation;
+  private Trio[] hashTable;
 
 
   /**
@@ -31,17 +31,19 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param hl hashLength, don't use a value lower than 8, still debugging...
    */
   public LinearProbingHashingTree(int hl) {
-    hashLength = new int[2];
-    hashOccupation = new int[2];
-    maxOccupation = new int[2];
-    hashTable = new Par[2][hl];
-    
-    for (int i = 0; i < 2; i++) {
-      hashLength[i] = hl < 8 ? 8 : hl;
-      hashOccupation[i] = 0;
-      maxOccupation[i] = hashLength[i] > 0 ? (int) (hashLength[i] * 0.4) : 1;
-      hashTable[i] = new Par[hashLength[i]];
-    }
+    /*
+     * hashLength = new int[2]; hashOccupation = new int[2]; maxOccupation = new int[2]; hashTable =
+     * new Par[2][hl];
+     * 
+     * for (int i = 0; i < 2; i++) { hashLength[i] = hl < 8 ? 8 : hl; hashOccupation[i] = 0;
+     * maxOccupation[i] = hashLength[i] > 0 ? (int) (hashLength[i] * 0.4) : 1; hashTable[i] = new
+     * Par[hashLength[i]]; }
+     */
+    hashLength = hl < 8 ? 8 : hl;
+    hashOccupation = 0;
+    maxOccupation = hashLength > 0 ? (int) (hashLength * 0.4) : 1;
+    hashTable = new Trio[hashLength];
+
   }
 
   /**
@@ -52,8 +54,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return
    */
-  public int getLength(int text) {
-    return this.getHashLength(text);
+  public int getLength() {
+    return this.getHashLength();
   }
 
   /**
@@ -61,8 +63,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return
    */
-  private int getHashLength(int text) {
-    return hashLength[text];
+  private int getHashLength() {
+    return hashLength;
   }
 
   /**
@@ -73,8 +75,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return
    */
-  public Object getRoot(int text) {
-    return this.getHashTable(text);
+  public Object getRoot() {
+    return this.getHashTable();
   }
 
   /**
@@ -82,8 +84,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return
    */
-  public Par[] getHashTable(int text) {
-    return hashTable[text];
+  public Trio[] getHashTable() {
+    return hashTable;
   }
 
   /**
@@ -93,14 +95,14 @@ public class LinearProbingHashingTree implements StringDictionary {
    */
   public boolean contains(String elem, int text) {
     boolean contains = false;
-    int hash = this.getHash(elem, text);
+    int hash = this.getHash(elem);
     int offset = 0;
-    while (offset < hashLength[text]) {
-      if (hashTable[text][(hash + offset) % hashLength[text]] == null) {
+    while (offset < hashLength) {
+      if (hashTable[(hash + offset) % hashLength] == null) {
         offset++;
         break;
       }
-      if (elem.equals(hashTable[text][(hash + offset) % hashLength[text]].getKey())) {
+      if (elem.equals(hashTable[(hash + offset) % hashLength].getKey())) {
         contains = true;
         break;
       }
@@ -120,14 +122,14 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @return
    */
   public int searchCount(String elem, int text) {
-    int hash = this.getHash(elem, text);
+    int hash = this.getHash(elem);
     int offset = 0;
-    while (offset < hashLength[text]) {
-      if (hashTable[text][(hash + offset) % hashLength[text]] == null) {
+    while (offset < hashLength) {
+      if (hashTable[(hash + offset) % hashLength] == null) {
         offset++;
         continue;
       }
-      if (elem.equals(hashTable[text][(hash + offset) % hashLength[text]].getKey())) {
+      if (elem.equals(hashTable[(hash + offset) % hashLength].getKey())) {
         break;
       }
       offset++;
@@ -144,20 +146,19 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @param elem corresponds to a Par object to be inserted.
    */
-  private void insert(Par elem, int text) {
-    if (hashOccupation[text] == maxOccupation[text] - 1) {
-      this.rehash(text);
+  private void insert(Trio elem) {
+    if (hashOccupation == maxOccupation - 1) {
+      this.rehash();
     }
     String key = elem.getKey();
-    ArrayList<Integer> values = elem.getValues();
-    int hash = getHash(key, text);
+    Object[] values = elem.getValues();
+    int hash = getHash(key);
     int offset = 0;
-    while (hashTable[text][(hash + offset) % hashLength[text]] != null 
-        && offset < hashLength[text]) {
+    while (hashTable[(hash + offset) % hashLength] != null && offset < hashLength) {
       offset++;
     }
-    hashTable[text][(hash + offset) % hashLength[text]] = new Par(key, values);
-    hashOccupation[text]++;
+    hashTable[(hash + offset) % hashLength] = new Trio(key, values);
+    hashOccupation++;
   }
 
 
@@ -174,15 +175,14 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param pos is the position of the ocurrence of the key
    */
   public void insert(String word, int pos, int text) {
-    if (hashOccupation[text] == maxOccupation[text] - 1) {
-      this.rehash(text);
+    if (hashOccupation == maxOccupation - 1) {
+      this.rehash();
     }
-    int hash = getHash(word, text);
+    int hash = getHash(word);
     int offset = 0;
     boolean repeated = false;
-    while (hashTable[text][(hash + offset) % hashLength[text]] != null 
-        && offset < hashLength[text]) {
-      if ((hashTable[text][(hash + offset) % hashLength[text]].getKey()).equals(word)) {
+    while (hashTable[(hash + offset) % hashLength] != null && offset < hashLength) {
+      if ((hashTable[(hash + offset) % hashLength].getKey()).equals(word)) {
         repeated = true;
         break;
       } else {
@@ -190,10 +190,10 @@ public class LinearProbingHashingTree implements StringDictionary {
       }
     }
     if (repeated) {
-      hashTable[text][(hash + offset) % hashLength[text]].addVal(pos);
+      hashTable[(hash + offset) % hashLength].addVal(pos, text);
     } else {
-      hashTable[text][(hash + offset) % hashLength[text]] = new Par(word, pos);
-      hashOccupation[text]++;
+      hashTable[(hash + offset) % hashLength] = new Trio(word, pos, text);
+      hashOccupation++;
     }
   }
 
@@ -205,10 +205,10 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return
    */
-  private Par[] extract(int text) {
-    Par[] tmp = new Par[hashOccupation[text] + 1];
+  private Trio[] extract() {
+    Trio[] tmp = new Trio[hashOccupation + 1];
     int i = 0;
-    for (Par elem : hashTable[text]) {
+    for (Trio elem : hashTable) {
       if (elem != null)
         tmp[i++] = elem;
     }
@@ -222,11 +222,11 @@ public class LinearProbingHashingTree implements StringDictionary {
    * The rehashing process doubles the hashTable's length.
    * </p>
    */
-  private void update(int text) {
-    hashLength[text] = 2 * hashLength[text];
-    maxOccupation[text] = (int) (hashLength[text] * 0.4);
-    hashOccupation[text] = 0;
-    hashTable[text] = new Par[hashLength[text]];
+  private void update() {
+    hashLength = 2 * hashLength;
+    maxOccupation = (int) (hashLength * 0.4);
+    hashOccupation = 0;
+    hashTable = new Trio[hashLength];
   }
 
 
@@ -237,16 +237,17 @@ public class LinearProbingHashingTree implements StringDictionary {
    * modularity.
    * </p>
    */
-  private void rehash(int text) {
-    Par[] tmp = this.extract(text);
+  private void rehash() {
+    Trio[] tmp = this.extract();
 
-    this.update(text);
+    this.update();
 
-    for (Par elem : tmp) {
+    for (Trio elem : tmp) {
       if (elem != null)
-        this.insert(elem, text);
+        this.insert(elem);
     }
   }
+
 
   /**
    * For testing purposes only!
@@ -260,17 +261,16 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param pos is the position of the occurrence of the key
    */
   public void insertAtEnd(String elem, int pos, int text) {
-    if (hashOccupation[text] >= maxOccupation[text]) {
-      this.rehash(text);
+    if (hashOccupation >= maxOccupation) {
+      this.rehash();
     }
-    int hash = hashLength[text] - 1;
+    int hash = hashLength - 1;
     int offset = 0;
-    while (hashTable[text][(hash + offset) % hashLength[text]] != null 
-        && offset < hashLength[text]) {
+    while (hashTable[(hash + offset) % hashLength] != null && offset < hashLength) {
       offset++;
     }
-    hashTable[text][(hash + offset) % hashLength[text]] = new Par(elem, pos);
-    hashOccupation[text]++;
+    hashTable[(hash + offset) % hashLength] = new Trio(elem, pos, text);
+    hashOccupation++;
   }
 
   /**
@@ -282,12 +282,12 @@ public class LinearProbingHashingTree implements StringDictionary {
   // Puede que sea una funcion muy mala!!
   // sin el abs tira vaores negativos!! No se pq!!
   // TODO
-  private int getHash(String elem, int text) {
+  private int getHash(String elem) {
     int hash = 7;
     for (int i = 0; i < elem.length(); i++) {
       hash = hash * 31 + elem.charAt(i);
     }
-    return Math.abs(hash % hashLength[text]);
+    return Math.abs(hash % hashLength);
   }
 
   /**
@@ -296,8 +296,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param elem is the key
    * @return the hash value associated to the key
    */
-  public int getHashNum(String elem, int text) {
-    return this.getHash(elem, text);
+  public int getHashNum(String elem) {
+    return this.getHash(elem);
   }
 
   /**
@@ -305,8 +305,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return the amount of elements inserted so far
    */
-  public int getSize(int text) {
-    return hashOccupation[text];
+  public int getSize() {
+    return hashOccupation;
   }
 
   /**
@@ -314,8 +314,8 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @return 40% of the actual hashLength
    */
-  public int getMaxOccupation(int text) {
-    return maxOccupation[text];
+  public int getMaxOccupation() {
+    return maxOccupation;
   }
 
   /**
@@ -326,16 +326,16 @@ public class LinearProbingHashingTree implements StringDictionary {
    */
   public ArrayList<Integer> search(String key, int text) {
     ArrayList<Integer> values = new ArrayList<Integer>();
-    Par tmp;
-    int hash = this.getHash(key, text);
+    Trio tmp;
+    int hash = this.getHash(key);
     int offset = 0;
-    while (offset < hashLength[text]) {
-      tmp = hashTable[text][(hash + offset) % hashLength[text]];
+    while (offset < hashLength) {
+      tmp = hashTable[(hash + offset) % hashLength];
       if (tmp == null) {
         break;
       }
       if (key.equals(tmp.getKey())) {
-        values = tmp.getValues();
+        values = tmp.getValues(text);
         break;
       }
       offset++;
@@ -346,10 +346,10 @@ public class LinearProbingHashingTree implements StringDictionary {
   /**
    * TODO
    */
-  public String[] getKeys(int text) {
-    String[] tmp = new String[hashOccupation[text]];
+  public String[] getKeys() {
+    String[] tmp = new String[hashOccupation];
     int i = 0;
-    for (Par elem : hashTable[text]) {
+    for (Trio elem : hashTable) {
       if (elem != null) {
         tmp[i++] = elem.getKey();
       }
@@ -374,11 +374,14 @@ public class LinearProbingHashingTree implements StringDictionary {
   }
 
   public double getSimilarity() {
-    return 0; // TODO
-  }
-
-  public String[] getKeys() {
-    return null; // TODO
+    double sum[] = new double[2];
+    for (Trio elem : hashTable) {
+      if (elem != null) {
+        sum[0] += Math.abs(elem.count(0) - elem.count(1));
+        sum[1] += elem.count(0) + elem.count(1);
+      }
+    }
+    return 1 - sum[0] / sum[1];
   }
 
 

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import javax.print.attribute.HashPrintServiceAttributeSet;
 
-import com.cc4102.stringDict.linearProbing.Par;
+import com.cc4102.stringDict.linearProbing.Trio;
 import org.junit.Test;
 
 import com.cc4102.stringDict.LinearProbingHashingTree;
@@ -26,12 +26,12 @@ public class LinearProbingTest {
 
   int hashLength = 8;
   LinearProbingHashingTree lpht = new LinearProbingHashingTree(hashLength);
-  Par[][] root = {(Par[]) lpht.getRoot(0), (Par[]) lpht.getRoot(1)};
+  Trio[] root = (Trio[]) lpht.getRoot();
 
 
   private void hashingTableLength(int text) {
     int expected = hashLength;
-    int actual = lpht.getLength(text);
+    int actual = lpht.getLength();
     assertEquals("The initial hashing table length should be the one specified in the construction",
         expected, actual);
   }
@@ -101,37 +101,34 @@ public class LinearProbingTest {
     insertSameElement(1);
   }
 
-  private void hashInsertionCircularity(int text) {
+  @Test
+  public void hashInsertionCircularityTest() {
     String elem = "hola";
     String elem2 = "chao";
 
-    ((LinearProbingHashingTree) lpht).insertAtEnd(elem, 0, text);
-    ((LinearProbingHashingTree) lpht).insertAtEnd(elem2, 1, text);
+    ((LinearProbingHashingTree) lpht).insertAtEnd(elem, 0, 0);
+    ((LinearProbingHashingTree) lpht).insertAtEnd(elem2, 1, 0);
 
     assertEquals("The last hashTable space should be the first element inserted", elem,
-        root[text][lpht.getLength(text) - 1].getKey());
+        root[lpht.getLength() - 1].getKey());
     assertEquals("The first hashTable space should be the second element inserted", elem2,
-        root[text][0].getKey());
+        root[0].getKey());
   }
+
 
   @Test
-  public void hashInsertionCircularityTest() {
-    hashInsertionCircularity(0);
-    hashInsertionCircularity(1);
-  }
-
-  private void rehashInsertion(int text) {
+  public void rehashInsertionTest() {
     String texto = "habia una vez un pajarito";
     String[] words = texto.split(" ");
     int length1, length2, size1, size2;
-    size1 = lpht.getSize(text);
-    length1 = lpht.getLength(text);
+    size1 = lpht.getSize();
+    length1 = lpht.getLength();
 
     for (int i = 0; i < words.length; i++) {
-      lpht.insert(words[i], i, text);
+      lpht.insert(words[i], i, 0);
     }
-    size2 = lpht.getSize(text);
-    length2 = lpht.getLength(text);
+    size2 = lpht.getSize();
+    length2 = lpht.getLength();
 
 
     assertEquals("First size shoulb be 0", 0, size1);
@@ -140,11 +137,6 @@ public class LinearProbingTest {
     assertEquals("Second length should also be double the hashLength", 2 * hashLength, length2);
   }
 
-  @Test
-  public void rehashInsertionTest() {
-    rehashInsertion(0);
-    rehashInsertion(1);
-  }
 
   private void hashSucccesfulContainment(int text) {
     String elem = "hola";
@@ -186,23 +178,18 @@ public class LinearProbingTest {
     hashSearchCircularity(1);
   }
 
-  private void hashOccupationLevel(int text) {
+  @Test
+  public void hashOccupationLevelTest() {
     String[] elems = {"a", "ab", "abc", "abcd", "abcde"};
-    int size1 = lpht.getSize(text);
+    int size1 = lpht.getSize();
 
     for (int i = 0; i < elems.length; i++) {
-      lpht.insert(elems[i], i, text);
+      lpht.insert(elems[i], i, 0);
     }
 
     assertEquals("LPHT should initialy have size 0.", 0, size1);
     assertEquals("LPHT should know elements were inserted.", size1 + elems.length,
-        lpht.getSize(text));
-  }
-
-  @Test
-  public void hashOccupationLevelTest() {
-    hashOccupationLevel(0);
-    hashOccupationLevel(1);
+        lpht.getSize());
   }
 
 
@@ -214,7 +201,7 @@ public class LinearProbingTest {
     fail("not yet implemented");
   }
 
-  private void alwaysPositiveHashFunction(int text) {
+  private void alwaysPositiveHashFunction() {
     String texto =
         "nam at lectus urna duis convallis convallis tellus id interdum velit laoreet id donec ultrices tincidunt arcu non sodales neque sodales ut etiam sit amet nisl purus in mollis nunc sed id semper risus in hendrerit gravida rutrum quisque non tellus orci ac auctor augue mauris augue neque gravida in fermentum et sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam id leo in vitae turpis massa sed elementum tempus egestas sed sed risus pretium quam vulputate dignissim suspendisse in est ante";
     String[] elems = texto.split(" ");
@@ -222,40 +209,38 @@ public class LinearProbingTest {
     int hash;
 
     for (String elem : elems) {
-      hash = tmp.getHashNum(elem, text);
+      hash = tmp.getHashNum(elem);
       assertTrue("Every hash should be between 0 and hashLength.", hash >= 0 && hash < hashLength);
     }
   }
 
   @Test
   public void alwaysPositiveHashFunctionTest() {
-    alwaysPositiveHashFunction(0);
-    alwaysPositiveHashFunction(1);
-
+    alwaysPositiveHashFunction();
   }
 
   private void fillPercentageBelow40Percent(int text) {
     int occupation;
     LinearProbingHashingTree tmp = (LinearProbingHashingTree) lpht;
 
-    occupation = tmp.getMaxOccupation(text);
+    occupation = tmp.getMaxOccupation();
 
     for (int i = 0; i < occupation; i++) {
       lpht.insert("a", i, text);
     }
-    occupation = lpht.getSize(text);
+    occupation = lpht.getSize();
 
     assertTrue("The occupation level should be lower than 40% before rehashing.",
-        occupation <= tmp.getMaxOccupation(text));
+        occupation <= tmp.getMaxOccupation());
 
-    occupation = tmp.getMaxOccupation(text);
+    occupation = tmp.getMaxOccupation();
     for (int i = 0; i < occupation; i++) {
       lpht.insert("b", i, text);
     }
-    occupation = lpht.getSize(text);
+    occupation = lpht.getSize();
 
     assertTrue("The occupation level should be lower than 40% after rehashing.",
-        occupation <= tmp.getMaxOccupation(text));
+        occupation <= tmp.getMaxOccupation());
   }
 
   @Test
@@ -324,10 +309,10 @@ public class LinearProbingTest {
     System.out.println("Test de Resistencia de Inserciones");
     System.out.println("Se insertaron: " + (iter * elems.length) + " elementos.");
     System.out.println("Tiempo total: " + time / 1e6 + "ms");
-    System.out.println("Largo LPHT: " + lpht.getLength(text));
-    System.out.println("Size LPHT: " + lpht.getSize(text));
+    System.out.println("Largo LPHT: " + lpht.getLength());
+    System.out.println("Size LPHT: " + lpht.getSize());
     System.out
-        .println("maxOccupation LPHT: " + ((LinearProbingHashingTree) lpht).getMaxOccupation(text));
+        .println("maxOccupation LPHT: " + ((LinearProbingHashingTree) lpht).getMaxOccupation());
     assertTrue(true);
   }
 
