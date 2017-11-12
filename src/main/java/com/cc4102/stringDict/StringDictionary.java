@@ -21,6 +21,7 @@ public interface StringDictionary {
   /**
    * @param word
    * @param pos
+   * @param text
    */
   void insert(String word, int pos, int text);
 
