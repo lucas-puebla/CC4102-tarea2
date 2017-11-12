@@ -31,14 +31,6 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param hl hashLength, don't use a value lower than 8, still debugging...
    */
   public LinearProbingHashingTree(int hl) {
-    /*
-     * hashLength = new int[2]; hashOccupation = new int[2]; maxOccupation = new int[2]; hashTable =
-     * new Par[2][hl];
-     * 
-     * for (int i = 0; i < 2; i++) { hashLength[i] = hl < 8 ? 8 : hl; hashOccupation[i] = 0;
-     * maxOccupation[i] = hashLength[i] > 0 ? (int) (hashLength[i] * 0.4) : 1; hashTable[i] = new
-     * Par[hashLength[i]]; }
-     */
     hashLength = hl < 8 ? 8 : hl;
     hashOccupation = 0;
     maxOccupation = hashLength > 0 ? (int) (hashLength * 0.4) : 1;
@@ -344,7 +336,8 @@ public class LinearProbingHashingTree implements StringDictionary {
   }
 
   /**
-   * TODO
+   * Finds all of the non-null elements inside the hashTable and returns them
+   * as a list of Strings
    */
   public String[] getKeys() {
     String[] tmp = new String[hashOccupation];
@@ -358,7 +351,11 @@ public class LinearProbingHashingTree implements StringDictionary {
   }
 
   /**
-   * TODO
+   * Counts the number of occurrences of the key in the text text.
+   * 
+   * @param key is the String to be searched
+   * @param text is the number of the text {0, 1}
+   * @return the number of occurrences of key in text
    */
   public int count(String key, int text) {
     int res = 0;
@@ -373,6 +370,10 @@ public class LinearProbingHashingTree implements StringDictionary {
     return "LinearProbingHashingTree";
   }
 
+  /**
+   * Calculates the similarity index between the 2 texts.
+   * @return the similarity index, which is between [0,1]
+   */
   public double getSimilarity() {
     double sum[] = new double[2];
     for (Trio elem : hashTable) {
