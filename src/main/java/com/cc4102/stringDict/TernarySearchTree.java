@@ -30,9 +30,6 @@ public class TernarySearchTree implements StringDictionary {
   public double getSimilarity() {
     double[] sums = new double[2];
     root.getSimilarity(sums);
-
-    System.out.println(sums[0] + " " + sums[1]);
-
     return 1 - sums[0] / sums[1];
   }
 
