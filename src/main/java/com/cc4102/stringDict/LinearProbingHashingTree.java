@@ -31,12 +31,6 @@ public class LinearProbingHashingTree implements StringDictionary {
    * @param hl hashLength, don't use a value lower than 8, still debugging...
    */
   public LinearProbingHashingTree(int hl) {
-<<<<<<< HEAD
-    hashLength = hl < 8 ? 8 : hl;
-    hashOccupation = 0;
-    maxOccupation = (int) (hashLength * 0.4);
-    hashTable = new Par[hashLength];
-=======
     hashLength = new int[2];
     hashOccupation = new int[2];
     maxOccupation = new int[2];
@@ -48,7 +42,6 @@ public class LinearProbingHashingTree implements StringDictionary {
       maxOccupation[i] = hashLength[i] > 0 ? (int) (hashLength[i] * 0.4) : 1;
       hashTable[i] = new Par[hashLength[i]];
     }
->>>>>>> refs/heads/dev
   }
 
   /**
@@ -151,15 +144,10 @@ public class LinearProbingHashingTree implements StringDictionary {
    * 
    * @param elem corresponds to a Par object to be inserted.
    */
-<<<<<<< HEAD
-  private void insert(Par elem) {
-    if (hashOccupation == maxOccupation - 1) {
-      this.rehash();
-=======
+
   private void insert(Par elem, int text) {
     if (hashOccupation[text] == maxOccupation[text] - 1) {
       this.rehash(text);
->>>>>>> refs/heads/dev
     }
     String key = elem.getKey();
     ArrayList<Integer> values = elem.getValues();
