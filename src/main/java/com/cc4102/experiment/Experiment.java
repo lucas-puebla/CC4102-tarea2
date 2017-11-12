@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.cc4102.stringDict.StringDictionary;
+import com.cc4102.stringDict.TernarySearchTree;
 
 /**
  * @author Lucas Puebla Silva
@@ -99,7 +100,6 @@ public class Experiment {
     constructionTime1 = sw.getTime();
     System.out.println("Construction1 took: " + constructionTime1 + " micro seconds");
 
-    /*
     // busquedas exitosas
     sw.start();
     searcher.searchForWords(wordsToSearch, dict);
@@ -111,7 +111,6 @@ public class Experiment {
     searcher.unsuccessfulSearch(spanishWords.split(" "), dict, wordsToSearch.length);
     sw.stop();
     System.out.println("unsuccesfull searches took: " + sw.getTime() + " micro seconds");
-    */
 
     // agregar segundo texto para text similarity
     sw.start();

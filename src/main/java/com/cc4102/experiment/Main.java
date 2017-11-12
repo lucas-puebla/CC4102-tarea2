@@ -18,8 +18,8 @@ public class Main {
 
 
   public static void main(String[] args) {
-    int experimentReps = 1;
-    int reps = 1;
+    int experimentReps = 11;
+    int reps = 10;
     
     Experiment exp = new Experiment();
 
