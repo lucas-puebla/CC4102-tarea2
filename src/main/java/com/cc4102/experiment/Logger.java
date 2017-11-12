@@ -14,7 +14,7 @@ public class Logger {
 
     private static void log(String s, String fileName) {
         byte data[] = s.getBytes();
-        Path p = Paths.get("./" + fileName + ".csv");
+        Path p = Paths.get("./resultados/" + fileName + ".csv");
 
         try (OutputStream out = new BufferedOutputStream(
                 Files.newOutputStream(p, CREATE, APPEND))) {

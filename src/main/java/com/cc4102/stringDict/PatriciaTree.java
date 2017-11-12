@@ -12,7 +12,7 @@ public class PatriciaTree implements StringDictionary {
     private PatriciaNode root;
 
     public PatriciaTree() {
-        this.root = new PatriciaNode("", false, null, new ArrayList<Integer>(), 2);
+        this.root = new PatriciaNode("", false, null, new ArrayList<Integer>(), 0);
     }
 
     public ArrayList<Integer> search(String key) {
