@@ -18,12 +18,12 @@ public class Main {
 
 
   public static void main(String[] args) {
-    int experimentReps = 11;
+    int experiments = 11;
     int reps = 10;
     
     Experiment exp = new Experiment();
 
-    for (int i = 0; i < experimentReps; i++) {
+    for (int i = experiments - 1; i >= 0; i--) {
       runExperiments(exp, reps, (int) Math.pow(2, i+10));
     }
     

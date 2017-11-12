@@ -104,7 +104,8 @@ public class Experiment {
     sw.start();
     searcher.searchForWords(wordsToSearch, dict);
     sw.stop();
-    System.out.println("succesfull searches took: " + sw.getTime() + " micro seconds");
+    System.out.println("succesfull searches took: " + sw.getTime()
+        + " micro seconds in " + wordsToSearch.length + " words");
 
     // busquedas infructuosas
     sw.start();
@@ -128,7 +129,6 @@ public class Experiment {
     // registrar tiempos
     Logger.logConstructionTime(dict.getClassStr(), "Construction", words1.length, constructionTime1);
     Logger.logConstructionTime(dict.getClassStr(), "Similarity", words1.length, similarityTime);
-
     System.out.println("Text Similarity took: " + similarityTime + " micro seconds"
         + "\nSimilarity index: " + similarity);
   }
